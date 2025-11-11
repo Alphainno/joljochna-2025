@@ -31,7 +31,7 @@
                     <div class="nav-subitem" onclick="navigateTo('home','home-hero')">হিরো সেকশন</div>
                     <div class="nav-subitem" onclick="navigateTo('home','home-features')">আমাদের সুবিধা সমূহ</div>
                     <div class="nav-subitem" onclick="navigateTo('home','home-pricing')">মূল্য তালিকা</div>
-                    <div class="nav-subitem" onclick="navigateTo('home','home-testimonials')">বিনিয়োগকারী মন্তব্য</div>
+                    <div class="nav-subitem" onclick="navigateTo('home','home-testimonials')">বিনিয়োগকারী মন্তব্য</div>
                     <div class="nav-subitem" onclick="navigateTo('home','home-social-carousel')">সোশ্যাল মিডিয়া</div>
                     <div class="nav-subitem" onclick="navigateTo('home','home-roadmap-content')">রোডম্যাপ কন্টেন্ট</div>
                     <div class="nav-subitem" onclick="navigateTo('home','home-projects')">অন্যান্য প্রকল্প</div>
@@ -48,6 +48,8 @@
                 <div class="nav-submenu" id="aboutSubmenu" role="group" aria-label="About submenu">
                     <div class="nav-subitem" onclick="navigateTo('about','about-hero')">হিরো সেকশন</div>
                     <div class="nav-subitem" onclick="navigateTo('about','about-history')">আমাদের ইতিহাস</div>
+                    <div class="nav-subitem" onclick="navigateTo('about','about-mission')">আমাদের মিশন</div>
+                    <div class="nav-subitem" onclick="navigateTo('about','about-vision')">আমাদের ভিশন</div>
                     <div class="nav-subitem" onclick="navigateTo('about','about-founder')">আমাদের প্রতিষ্ঠাতা</div>
                     <div class="nav-subitem" onclick="navigateTo('about','about-chairman')">আমাদের চেয়ারম্যান</div>
                 </div>

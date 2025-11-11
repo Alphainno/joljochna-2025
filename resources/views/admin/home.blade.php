@@ -1,6 +1,6 @@
 <div id="home" class="tab-content">
     <div class="stats-grid">
-        <div class="stat-card">
+        <div class="stat-card full-width">
             <div class="stat-card-content">
                 <div class="stat-info">
                     <h3>হোম</h3>
@@ -71,8 +71,8 @@
                         </div>
                     </div>
                     <div class="form-group" style="margin-top:8px;">
-                        <label>ইমেইল ঠিকানা</label>
-                        <input type="text" id="contactEmailAddressInput" placeholder="hello@example.com">
+                        <label>ইমেইল ঠিকানা (লাইন ব্রেকে আলাদা করুন বা &lt;br&gt; ব্যবহার করুন)</label>
+                        <textarea id="contactEmailAddressInput" placeholder="hello@example.com"></textarea>
                     </div>
                 </div>
                 <div class="card">
@@ -110,9 +110,47 @@
                 </div>
             </div>
 
-            <div style="margin-top:14px; display:flex; gap:10px;">
+            <div style="margin-top:14px; display:flex; gap:10px; align-items:center;">
                 <button id="saveContactBtn" class="btn btn-primary" type="button">সেভ</button>
                 <button id="resetContactBtn" class="btn btn-secondary" type="button">রিসেট</button>
+                <span style="color:#6b7280; font-size:14px; margin-left:8px;">
+                    💡 পরিবর্তন দেখতে <a href="/" target="_blank" style="color:#059669; text-decoration:underline;">হোম পেজ</a> এর যোগাযোগ সেকশন চেক করুন
+                </span>
+            </div>
+
+            {{-- Live Preview --}}
+            <div style="margin-top:1.5rem; border:1px solid #e5e7eb; border-radius:12px; padding:16px; background:#f9fafb;">
+                <h3 style="margin:0 0 1rem 0; font-size:1rem; color:#374151;">লাইভ প্রিভিউ</h3>
+                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap:12px;">
+                    <div style="border:1px solid #e5e7eb; border-radius:8px; padding:12px; background:#fff; display:flex; gap:12px; align-items:start;">
+                        <div id="prevPhoneIcon" style="font-size:24px;">📞</div>
+                        <div>
+                            <h4 id="prevPhoneLabel" style="margin:0 0 4px; font-size:14px; color:#059669;">Phone</h4>
+                            <p id="prevPhoneNumbers" style="margin:0; font-size:13px; color:#6b7280; line-height:1.5;">+880 1991 995 995</p>
+                        </div>
+                    </div>
+                    <div style="border:1px solid #e5e7eb; border-radius:8px; padding:12px; background:#fff; display:flex; gap:12px; align-items:start;">
+                        <div id="prevEmailIcon" style="font-size:24px;">📧</div>
+                        <div>
+                            <h4 id="prevEmailLabel" style="margin:0 0 4px; font-size:14px; color:#059669;">Email</h4>
+                            <p id="prevEmailAddress" style="margin:0; font-size:13px; color:#6b7280;">hello@example.com</p>
+                        </div>
+                    </div>
+                    <div style="border:1px solid #e5e7eb; border-radius:8px; padding:12px; background:#fff; display:flex; gap:12px; align-items:start;">
+                        <div id="prevWebIcon" style="font-size:24px;">🌐</div>
+                        <div>
+                            <h4 id="prevWebLabel" style="margin:0 0 4px; font-size:14px; color:#059669;">Website</h4>
+                            <p id="prevWebAddress" style="margin:0; font-size:13px; color:#6b7280;">www.example.com</p>
+                        </div>
+                    </div>
+                    <div style="border:1px solid #e5e7eb; border-radius:8px; padding:12px; background:#fff; display:flex; gap:12px; align-items:start;">
+                        <div id="prevAddressIcon" style="font-size:24px;">📍</div>
+                        <div>
+                            <h4 id="prevAddressLabel" style="margin:0 0 4px; font-size:14px; color:#059669;">Address</h4>
+                            <p id="prevAddressText" style="margin:0; font-size:13px; color:#6b7280; line-height:1.5;">শুভনূর ৩৮৮ বাড়ি</p>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <script>
@@ -136,6 +174,22 @@
                         addressText: qs('contactAddressTextInput')
                     };
 
+                    // Live preview elements
+                    const prevEls = {
+                        phoneIcon: qs('prevPhoneIcon'),
+                        phoneLabel: qs('prevPhoneLabel'),
+                        phoneNumbers: qs('prevPhoneNumbers'),
+                        emailIcon: qs('prevEmailIcon'),
+                        emailLabel: qs('prevEmailLabel'),
+                        emailAddress: qs('prevEmailAddress'),
+                        webIcon: qs('prevWebIcon'),
+                        webLabel: qs('prevWebLabel'),
+                        webAddress: qs('prevWebAddress'),
+                        addressIcon: qs('prevAddressIcon'),
+                        addressLabel: qs('prevAddressLabel'),
+                        addressText: qs('prevAddressText')
+                    };
+
                     function read(){ try{ return JSON.parse(localStorage.getItem('contactSettings')||'{}'); }catch(e){ return {}; } }
                     function write(v){ localStorage.setItem('contactSettings', JSON.stringify(v)); window.dispatchEvent(new StorageEvent('storage', {key:'contactSettings', newValue: JSON.stringify(v)})); }
                     function cur(){ return read() || {}; }
@@ -150,13 +204,28 @@
                         if(els.phoneNumbers) els.phoneNumbers.value = (s.phoneNumbers||'+880 1991 995 995\n+880 1991 994 994').replace(/<br\s*\/>?/gi, '\n');
                         if(els.emailIcon) els.emailIcon.value = s.emailIcon || '📧';
                         if(els.emailLabel) els.emailLabel.value = s.emailLabel || 'ইমেইল';
-                        if(els.emailAddress) els.emailAddress.value = s.emailAddress || 'hello@example.com';
+                        if(els.emailAddress) els.emailAddress.value = (s.emailAddress||'hello@example.com').replace(/<br\s*\/>?/gi, '\n');
                         if(els.webIcon) els.webIcon.value = s.webIcon || '🌐';
                         if(els.webLabel) els.webLabel.value = s.webLabel || 'ওয়েবসাইট';
                         if(els.webAddress) els.webAddress.value = s.webAddress || 'www.example.com';
                         if(els.addressIcon) els.addressIcon.value = s.addressIcon || '📍';
                         if(els.addressLabel) els.addressLabel.value = s.addressLabel || 'ঠিকানা';
                         if(els.addressText) els.addressText.value = (s.addressText||'').replace(/<br\s*\/>?/gi, '\n');
+                    }
+
+                    function updatePreview() {
+                        if(prevEls.phoneIcon) prevEls.phoneIcon.textContent = els.phoneIcon?.value || '📞';
+                        if(prevEls.phoneLabel) prevEls.phoneLabel.textContent = els.phoneLabel?.value || 'Phone';
+                        if(prevEls.phoneNumbers) prevEls.phoneNumbers.innerHTML = (els.phoneNumbers?.value || '').split(/\n+/).map(s=>s.trim()).filter(Boolean).join('<br>') || '+880 1991 995 995';
+                        if(prevEls.emailIcon) prevEls.emailIcon.textContent = els.emailIcon?.value || '📧';
+                        if(prevEls.emailLabel) prevEls.emailLabel.textContent = els.emailLabel?.value || 'Email';
+                        if(prevEls.emailAddress) prevEls.emailAddress.innerHTML = (els.emailAddress?.value || '').split(/\n+/).map(s=>s.trim()).filter(Boolean).join('<br>') || 'hello@example.com';
+                        if(prevEls.webIcon) prevEls.webIcon.textContent = els.webIcon?.value || '🌐';
+                        if(prevEls.webLabel) prevEls.webLabel.textContent = els.webLabel?.value || 'Website';
+                        if(prevEls.webAddress) prevEls.webAddress.textContent = els.webAddress?.value || 'www.example.com';
+                        if(prevEls.addressIcon) prevEls.addressIcon.textContent = els.addressIcon?.value || '📍';
+                        if(prevEls.addressLabel) prevEls.addressLabel.textContent = els.addressLabel?.value || 'Address';
+                        if(prevEls.addressText) prevEls.addressText.innerHTML = (els.addressText?.value || '').split(/\n+/).map(s=>s.trim()).filter(Boolean).join('<br>') || 'শুভনূর ৩৮৮ বাড়ি';
                     }
 
                     function save(){
@@ -169,7 +238,7 @@
                             phoneNumbers: (els.phoneNumbers?.value || '').split(/\n+/).map(s=>s.trim()).filter(Boolean).join('<br>'),
                             emailIcon: els.emailIcon?.value || '',
                             emailLabel: els.emailLabel?.value || '',
-                            emailAddress: els.emailAddress?.value || '',
+                            emailAddress: (els.emailAddress?.value || '').split(/\n+/).map(s=>s.trim()).filter(Boolean).join('<br>'),
                             webIcon: els.webIcon?.value || '',
                             webLabel: els.webLabel?.value || '',
                             webAddress: els.webAddress?.value || '',
@@ -178,17 +247,34 @@
                             addressText: (els.addressText?.value || '').split(/\n+/).map(s=>s.trim()).filter(Boolean).join('<br>')
                         };
                         write(payload);
+                        updatePreview();
+                        showSaveSuccess();
+                    }
+
+                    function showSaveSuccess() {
+                        const btn = document.getElementById('saveContactBtn');
+                        const originalText = btn.textContent;
+                        btn.textContent = '✓ সেভ হয়েছে';
+                        btn.style.backgroundColor = '#10b981';
+                        setTimeout(() => {
+                            btn.textContent = originalText;
+                            btn.style.backgroundColor = '';
+                        }, 2000);
                     }
 
                     document.getElementById('saveContactBtn').addEventListener('click', save);
                     document.getElementById('resetContactBtn').addEventListener('click', ()=>{
-                        localStorage.removeItem('contactSettings'); load(); window.dispatchEvent(new StorageEvent('storage', {key:'contactSettings', newValue: null}));
+                        localStorage.removeItem('contactSettings'); 
+                        load(); 
+                        updatePreview();
+                        window.dispatchEvent(new StorageEvent('storage', {key:'contactSettings', newValue: null}));
                     });
 
                     // Auto-save on input changes
                     Object.values(els).forEach(el=>{ if(!el) return; ['input','change'].forEach(ev=> el.addEventListener(ev, save)); });
 
                     load();
+                    updatePreview();
                 })();
             </script>
         </div>
@@ -1414,28 +1500,77 @@
             </div>
             <input type="hidden" id="csrfToken" value="{{ csrf_token() }}">
             <style>
+                @keyframes modalSlideIn {
+                    from {
+                        opacity: 0;
+                        transform: scale(0.9) translateY(-20px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: scale(1) translateY(0);
+                    }
+                }
+                
+                #home-social-carousel .social-form input[type="text"],
+                #home-social-carousel .social-form input[type="url"],
+                #home-social-carousel .social-form textarea { 
+                    height: 46px; 
+                    padding:10px 12px; 
+                    font-size:15px; 
+                    border-radius:10px; 
+                    width: 100%;
+                    border: 1px solid #e5e7eb;
+                    box-sizing: border-box;
+                }
+                #home-social-carousel .social-form textarea { 
+                    height: auto; 
+                    min-height: 80px; 
+                    resize: vertical;
+                }
                 #home-social-carousel .social-grid-editor { 
-                    display:grid; grid-template-columns:repeat(2,1fr); gap:12px; 
+                    display:grid; 
+                    grid-template-columns:repeat(2,1fr); 
+                    gap:12px; 
                 }
                 #home-social-carousel .card-editor { 
-                    border:1px solid #e5e7eb; border-radius:12px; padding:12px; background:#fafafa; position:relative;
+                    border:1px solid #e5e7eb; 
+                    border-radius:12px; 
+                    padding:12px; 
+                    background:#fafafa;
+                    position: relative;
                 }
                 #home-social-carousel .card-editor h4 { 
-                    margin:0 0 8px; font-size:14px; display:flex; justify-content:space-between; align-items:center;
+                    margin:0 0 8px; 
+                    font-size:14px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
                 }
-                #home-social-carousel .card-editor input[type="text"],
-                #home-social-carousel .card-editor input[type="url"],
-                #home-social-carousel .card-editor select,
-                #home-social-carousel .card-editor textarea {
-                    height:46px; padding:10px 12px; font-size:15px; border-radius:10px; width:100%; box-sizing:border-box; border:1px solid #e5e7eb;
+                #home-social-carousel .card-editor .delete-btn {
+                    background: #ef4444;
+                    color: white;
+                    border: none;
+                    padding: 10px 16px;
+                    border-radius: 6px;
+                    cursor: pointer;
+                    font-size: 14px;
+                    font-weight: 500;
+                    transition: background 0.2s;
                 }
-                #home-social-carousel .card-editor textarea { height:auto; min-height:80px; resize:vertical; }
-                #home-social-carousel .card-editor .delete-btn { background:#ef4444; color:#fff; border:none; padding:10px 16px; border-radius:6px; cursor:pointer; font-size:14px; font-weight:500; }
-                @media (max-width: 960px){ #home-social-carousel .social-grid-editor{ grid-template-columns:1fr } }
+                #home-social-carousel .card-editor .delete-btn:hover {
+                    background: #dc2626;
+                }
+                @media (max-width: 960px){ 
+                    #home-social-carousel .social-grid-editor{ 
+                        grid-template-columns:1fr;
+                    } 
+                }
             </style>
             
             <div class="social-form">
-                <div id="socialItemsContainer" class="social-grid-editor"></div>
+                <div id="socialItemsContainer" class="social-grid-editor">
+                    <!-- Social media items will be loaded here dynamically -->
+                </div>
             </div>
             <script>
                 (function(){
@@ -1480,19 +1615,102 @@
 
                     function collectPreviewItems(){
                         const cards = Array.from(container.querySelectorAll('.card-editor'));
-                        return cards.map(card=>{
-                            const title = card.querySelector('.sm-title')?.value?.trim() || '';
-                            const content = card.querySelector('.sm-subtitle')?.value?.trim() || '';
-                            const link = card.querySelector('.sm-link')?.value?.trim() || '';
-                            const img = card.querySelector(`[class^="image-preview-"] img`)?.getAttribute('src') || '';
-                            return { title, content, link, image_url: img };
+                        const uniqueCards = new Map();
+                        
+                        cards.forEach(card => {
+                            const cardId = card.dataset.socialId;
+                            
+                            // Get values from input fields (works in both edit and view mode)
+                            const titleInput = card.querySelector('.sm-title');
+                            const contentInput = card.querySelector('.sm-subtitle');
+                            const linkInput = card.querySelector('.sm-link');
+                            const imgElement = card.querySelector(`[class^="image-preview-"] img`);
+                            
+                            const title = titleInput?.value?.trim() || '';
+                            const content = contentInput?.value?.trim() || '';
+                            const link = linkInput?.value?.trim() || '';
+                            const image_url = imgElement?.getAttribute('src') || '';
+                            
+                            // Only include items with at least title or content
+                            if(title || content) {
+                                // Use card ID as key to prevent duplicates
+                                uniqueCards.set(cardId, { title, content, link, image_url });
+                            }
                         });
+                        
+                        return Array.from(uniqueCards.values());
                     }
 
+                    function updateDashboardStatus(){
+                        const dashStatusText = document.getElementById('dashStatusText');
+                        const dashItemCount = document.getElementById('dashItemCount');
+                        const dashStatusIndicator = document.getElementById('dashStatusIndicator');
+                        
+                        // Get unique cards from DOM
+                        const allCards = Array.from(container.querySelectorAll('.card-editor'));
+                        const uniqueCardIds = new Set();
+                        allCards.forEach(card => uniqueCardIds.add(card.dataset.socialId));
+                        const cardCount = uniqueCardIds.size;
+                        
+                        const validItems = collectPreviewItems();
+                        const validCount = validItems.length;
+                        
+                        if(dashItemCount){
+                            dashItemCount.textContent = `${cardCount} টি আইটেম`;
+                            if(cardCount > 0){
+                                dashItemCount.style.background = '#d1fae5';
+                                dashItemCount.style.color = '#065f46';
+                            } else {
+                                dashItemCount.style.background = '#fee2e2';
+                                dashItemCount.style.color = '#991b1b';
+                            }
+                        }
+                        
+                        if(dashStatusText){
+                            if(validCount > 0 && validCount !== cardCount){
+                                dashStatusText.textContent = `${validCount} টি প্রিভিউতে`;
+                            } else if(cardCount > 0){
+                                dashStatusText.textContent = 'প্রিভিউতে সংযুক্ত';
+                            } else {
+                                dashStatusText.textContent = 'কোনো আইটেম নেই';
+                            }
+                        }
+                        
+                        if(dashStatusIndicator){
+                            if(cardCount > 0){
+                                dashStatusIndicator.style.background = '#10b981';
+                                dashStatusIndicator.style.boxShadow = '0 0 6px #10b981';
+                            } else {
+                                dashStatusIndicator.style.background = '#fbbf24';
+                                dashStatusIndicator.style.boxShadow = '0 0 6px #fbbf24';
+                            }
+                        }
+                    }
+                    
                     function broadcastPreview(){
-                        const payload = { ts: Date.now(), items: collectPreviewItems() };
-                        try{ localStorage.setItem('liveSocialMediaPreview', JSON.stringify(payload)); }catch(_){ }
-                        try{ window.dispatchEvent(new StorageEvent('storage', { key:'liveSocialMediaPreview', newValue: JSON.stringify(payload) })); }catch(_){ }
+                        const previewItems = collectPreviewItems();
+                        const payload = { 
+                            ts: Date.now(), 
+                            items: previewItems 
+                        };
+                        
+                        try{ 
+                            localStorage.setItem('liveSocialMediaPreview', JSON.stringify(payload)); 
+                        }catch(e){ 
+                            console.error('Failed to save preview:', e); 
+                        }
+                        
+                        // Dispatch storage event for cross-tab communication
+                        try{ 
+                            window.dispatchEvent(new StorageEvent('storage', { 
+                                key: 'liveSocialMediaPreview', 
+                                newValue: JSON.stringify(payload),
+                                url: window.location.href,
+                                storageArea: localStorage
+                            })); 
+                        }catch(_){ }
+                        
+                        updateDashboardStatus();
                         saveCardsToStorage();
                     }
 
@@ -1514,64 +1732,233 @@
                         const card = document.createElement('div');
                         card.className = 'card card-editor';
                         card.dataset.socialId = id;
+                        card.dataset.editMode = isNew ? 'true' : 'false'; // New cards start in edit mode
+                        
                         card.innerHTML = `
                             <div class="card-body text-center">
-                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                                <h4 style="margin:0;"><span>আইটেম ${displayIndex}</span></h4>
-                                <button type="button" class="remove-card-btn" onclick="removeCardFromForm('${id}')" style="background:#ef4444; color:white; border:none; border-radius:6px; padding:6px 12px; font-size:12px; cursor:pointer; font-weight:500;">✕ সরান</button>
-                            </div>
-                            <div style="text-align:left;">
-                                <label style="display:block; margin-bottom:4px; font-size:13px; font-weight:500;">শিরোনাম</label>
-                                <input type="text" class="sm-title" placeholder="শিরোনাম" value="${escapedTitle}" />
-                            </div>
-                            <div style="margin-top:8px; text-align:left;">
-                                <label style="display:block; margin-bottom:4px; font-size:13px; font-weight:500;">সাব-শিরোনাম</label>
-                                <textarea class="sm-subtitle" placeholder="সাব-শিরোনাম">${escapedSubtitle}</textarea>
-                            </div>
-                            <div style="margin-top:8px;">
-                                <label style="display:block; margin-bottom:4px; font-size:13px; font-weight:500;">লিংক</label>
-                                <input type="url" class="sm-link" placeholder="https://..." value="${escapedLink}" />
-                            </div>
-                            <div style="margin-top:8px;">
-                                <label style="display:block; margin-bottom:4px; font-size:13px; font-weight:500;">ছবি আপলোড করুন</label>
-                                <input type="file" class="sm-image" accept="image/*" style="width:100%; padding:6px; border:1px solid #e5e7eb; border-radius:6px;" onchange="previewSocialImage(this, '${id}')" />
-                                <div class="image-preview-${id}" style="margin-top:8px;">
-                                    ${imageUrl ? `<img src="${imageUrl}" alt="Preview" style="max-width:100%; max-height:120px; border-radius:8px; border:1px solid #e5e7eb;" />` : ''}
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; padding-bottom:8px; border-bottom:2px solid #e5e7eb;">
+                                <h4 style="margin:0; color:#0a4d2e; font-weight:600;"><span>আইটেম ${displayIndex}</span></h4>
+                                <div style="display:flex; gap:8px;">
+                                    ${!isNew ? `<button type="button" class="edit-mode-btn" onclick="toggleEditMode('${id}')" style="background:#3b82f6; color:white; border:none; border-radius:6px; padding:6px 12px; font-size:12px; cursor:pointer; font-weight:500; transition: all 0.2s; display:none;" onmouseover="this.style.background='#2563eb'" onmouseout="this.style.background='#3b82f6'">✎ সম্পাদনা</button>` : ''}
+                                    <button type="button" class="remove-card-btn" onclick="removeCardFromForm('${id}')" style="background:#ef4444; color:white; border:none; border-radius:6px; padding:6px 12px; font-size:12px; cursor:pointer; font-weight:500; transition: all 0.2s;" onmouseover="this.style.background='#dc2626'" onmouseout="this.style.background='#ef4444'">✕ সরান</button>
                                 </div>
                             </div>
-                            <div style="margin-top:8px; display:flex; gap:8px; align-items:center; flex-wrap:wrap; justify-content:center;">
-                                <button type="button" class="btn btn-primary" onclick="saveSocialItem('${id}')" style="padding:8px 16px; font-size:13px;">${isNew ? 'যোগ করুন' : 'আপডেট'}</button>
-                                ${!isNew ? `<button type="button" class="delete-btn" onclick="deleteSocialItem('${id}')">মুছুন</button>` : ''}
-                                <span class="save-status-${id}" style="font-size:12px; color:#666; margin-left:8px;"></span>
+                            <div style="text-align:left;">
+                                <label style="display:block; margin-bottom:4px; font-size:13px; font-weight:600; color:#374151;">শিরোনাম</label>
+                                <input type="text" class="sm-title editable-field" placeholder="শিরোনাম লিখুন" value="${escapedTitle}" style="width:100%; padding:8px; border:1px solid #d1d5db; border-radius:6px; font-size:13px; transition: border 0.2s;" onfocus="this.style.borderColor='#0a4d2e'" onblur="this.style.borderColor='#d1d5db'" />
+                            </div>
+                            <div style="margin-top:8px; text-align:left;">
+                                <label style="display:block; margin-bottom:4px; font-size:13px; font-weight:600; color:#374151;">সাব-শিরোনাম</label>
+                                <textarea class="sm-subtitle editable-field" placeholder="বিস্তারিত লিখুন" style="width:100%; padding:8px; border:1px solid #d1d5db; border-radius:6px; min-height:60px; font-size:13px; resize:vertical; font-family:inherit; transition: border 0.2s;" onfocus="this.style.borderColor='#0a4d2e'" onblur="this.style.borderColor='#d1d5db'">${escapedSubtitle}</textarea>
+                            </div>
+                            <div style="margin-top:8px; text-align:left;">
+                                <label style="display:block; margin-bottom:4px; font-size:13px; font-weight:600; color:#374151;">লিংক</label>
+                                <input type="url" class="sm-link editable-field" placeholder="https://example.com" value="${escapedLink}" style="width:100%; padding:8px; border:1px solid #d1d5db; border-radius:6px; font-size:13px; transition: border 0.2s;" onfocus="this.style.borderColor='#0a4d2e'" onblur="this.style.borderColor='#d1d5db'" />
+                            </div>
+                            <div class="image-upload-section" style="margin-top:8px; text-align:left;">
+                                <label style="display:block; margin-bottom:4px; font-size:13px; font-weight:600; color:#374151;">ছবি আপলোড করুন</label>
+                                <input type="file" class="sm-image editable-field" accept="image/*" style="width:100%; padding:8px; border:1px solid #d1d5db; border-radius:6px; font-size:13px; cursor:pointer;" onchange="previewSocialImage(this, '${id}')" />
+                                <div class="image-preview-${id}" style="margin-top:8px; text-align:center;">
+                                    ${imageUrl ? `<img src="${imageUrl}" alt="Preview" style="max-width:100%; max-height:150px; border-radius:8px; border:2px solid #e5e7eb; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" />` : ''}
+                                </div>
+                            </div>
+                            <div class="action-buttons" style="margin-top:16px; padding-top:12px; border-top:1px solid #e5e7eb; display:flex; gap:8px; align-items:center; flex-wrap:wrap; justify-content:center;">
+                                <button type="button" class="save-btn btn btn-primary" onclick="saveSocialItem('${id}')" style="padding:10px 20px; font-size:14px; font-weight:600; background:#0a4d2e; border:none; border-radius:6px; color:white; cursor:pointer; transition: all 0.2s; box-shadow: 0 2px 4px rgba(10,77,46,0.2);" onmouseover="this.style.background='#0d6639'; this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 6px rgba(10,77,46,0.3)'" onmouseout="this.style.background='#0a4d2e'; this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(10,77,46,0.2)'">${isNew ? '✓ সংরক্ষণ' : '✓ আপডেট'}</button>
+                                ${!isNew ? `<button type="button" class="cancel-edit-btn" onclick="toggleEditMode('${id}')" style="padding:10px 20px; font-size:14px; font-weight:600; background:#6b7280; border:none; border-radius:6px; color:white; cursor:pointer; transition: all 0.2s; box-shadow: 0 2px 4px rgba(107,114,128,0.2); display:none;" onmouseover="this.style.background='#4b5563'; this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 6px rgba(107,114,128,0.3)'" onmouseout="this.style.background='#6b7280'; this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(107,114,128,0.2)'">✕ বাতিল</button>` : ''}
+                                ${!isNew ? `<button type="button" class="delete-btn" onclick="deleteSocialItem('${id}')" style="padding:10px 20px; font-size:14px; font-weight:600; background:#ef4444; border:none; border-radius:6px; color:white; cursor:pointer; transition: all 0.2s; box-shadow: 0 2px 4px rgba(239,68,68,0.2);" onmouseover="this.style.background='#dc2626'; this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 6px rgba(239,68,68,0.3)'" onmouseout="this.style.background='#ef4444'; this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(239,68,68,0.2)'">✕ মুছুন</button>` : ''}
+                            </div>
+                            <div style="margin-top:8px; min-height:20px; text-align:center;">
+                                <span class="save-status-${id}" style="font-size:13px; font-weight:500; display:inline-block; padding:4px 12px; border-radius:4px;"></span>
                             </div>
                             </div>
                         `;
-                        // attach handlers for this new card for live preview
-                        setTimeout(()=> attachLiveHandlers(card), 0);
+                        
+                        // Set initial edit mode
+                        setTimeout(() => {
+                            if(!isNew) {
+                                setCardEditMode(card, false);
+                            }
+                            attachLiveHandlers(card);
+                            // Ensure button text is correct for existing items
+                            if(!isNew){
+                                const saveBtn = card.querySelector('.save-btn');
+                                if(saveBtn) saveBtn.textContent = '✓ আপডেট';
+                            }
+                        }, 50);
+                        
                         return card;
+                    }
+                    
+                    function setCardEditMode(card, isEditing){
+                        if(!card) return;
+                        
+                        card.dataset.editMode = isEditing ? 'true' : 'false';
+                        
+                        // Toggle editable fields
+                        const fields = card.querySelectorAll('.editable-field');
+                        fields.forEach(field => {
+                            field.readOnly = !isEditing;
+                            field.disabled = !isEditing;
+                            field.style.backgroundColor = isEditing ? '#ffffff' : '#f9fafb';
+                            field.style.cursor = isEditing ? 'text' : 'not-allowed';
+                            field.style.opacity = isEditing ? '1' : '0.7';
+                        });
+                        
+                        // Toggle buttons visibility
+                        const editBtn = card.querySelector('.edit-mode-btn');
+                        const saveBtn = card.querySelector('.save-btn');
+                        const cancelBtn = card.querySelector('.cancel-edit-btn');
+                        const deleteBtn = card.querySelector('.delete-btn');
+                        const imageUpload = card.querySelector('.image-upload-section');
+                        
+                        if(editBtn) editBtn.style.display = isEditing ? 'none' : 'inline-block';
+                        if(saveBtn) saveBtn.style.display = isEditing ? 'inline-block' : 'none';
+                        if(cancelBtn) cancelBtn.style.display = isEditing ? 'inline-block' : 'none';
+                        if(deleteBtn) deleteBtn.style.display = isEditing ? 'none' : 'inline-block';
+                        if(imageUpload) {
+                            const fileInput = imageUpload.querySelector('.sm-image');
+                            if(fileInput) fileInput.style.display = isEditing ? 'block' : 'none';
+                        }
+                    }
+                    
+                    window.toggleEditMode = function(id){
+                        const card = document.querySelector(`[data-social-id="${id}"]`);
+                        if(!card) return;
+                        
+                        const currentMode = card.dataset.editMode === 'true';
+                        setCardEditMode(card, !currentMode);
+                        
+                        // If canceling edit, restore original values
+                        if(currentMode){
+                            // Find the original item data
+                            const originalItem = items.find(item => item.id == id);
+                            if(originalItem){
+                                card.querySelector('.sm-title').value = originalItem.title || '';
+                                card.querySelector('.sm-subtitle').value = originalItem.content || '';
+                                card.querySelector('.sm-link').value = originalItem.link || '';
+                            }
+                            // Broadcast preview after restoring values
+                            broadcastPreview();
+                        }
                     }
 
                     async function loadItems(){
+                        const dashStatusText = document.getElementById('dashStatusText');
+                        const dashStatusIndicator = document.getElementById('dashStatusIndicator');
+                        
+                        if(dashStatusText) dashStatusText.textContent = 'ডাটাবেস থেকে লোড হচ্ছে...';
+                        if(dashStatusIndicator){
+                            dashStatusIndicator.style.background = '#3b82f6';
+                            dashStatusIndicator.style.boxShadow = '0 0 6px #3b82f6';
+                        }
+                        
                         try{
-                            const res = await fetch('/api/social-media');
+                            const res = await fetch('/api/social-media?_=' + Date.now(), {
+                                headers: { 'Accept': 'application/json' },
+                                cache: 'no-store'
+                            });
                             if(!res.ok) throw new Error('Failed to load social media');
                             items = await res.json();
                             container.innerHTML = '';
                             if(items.length===0){
                                 container.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 2rem; color: #666;">কোনো আইটেম নেই। "আইটেম যোগ করুন" বাটনে ক্লিক করে নতুন আইটেম যোগ করুন।</div>';
+                                // Broadcast empty preview
+                                broadcastPreview();
                             } else {
-                                items.forEach((it, idx)=>{ container.appendChild(createCard(it, idx)); });
+                                // Clear container first to prevent duplicates
+                                container.innerHTML = '';
+                                // Remove duplicates from items array based on ID
+                                const uniqueItems = [];
+                                const seenIds = new Set();
+                                items.forEach(it => {
+                                    if(!seenIds.has(it.id)){
+                                        seenIds.add(it.id);
+                                        uniqueItems.push(it);
+                                    }
+                                });
+                                items = uniqueItems;
+                                
+                                items.forEach((it, idx)=>{ 
+                                    container.appendChild(createCard(it, idx)); 
+                                });
+                                
+                                // After DOM is ready, attach handlers and broadcast initial preview
+                                setTimeout(() => {
+                                    attachLiveHandlers();
+                                    broadcastPreview();
+                                }, 100);
                             }
-                            // After DOM is ready, attach handlers and broadcast initial preview
-                            attachLiveHandlers();
-                            broadcastPreview();
+                            
+                            if(dashStatusText) dashStatusText.textContent = 'ডাটাবেস সংযুক্ত';
+                            if(dashStatusIndicator){
+                                dashStatusIndicator.style.background = '#10b981';
+                                dashStatusIndicator.style.boxShadow = '0 0 6px #10b981';
+                            }
                         }catch(err){
                             console.error('Error loading social items:', err);
                             container.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 2rem; color: #ef4444;">সোশ্যাল মিডিয়া লোড করতে সমস্যা হয়েছে।</div>';
+                            
+                            if(dashStatusText) dashStatusText.textContent = 'লোড ব্যর্থ';
+                            if(dashStatusIndicator){
+                                dashStatusIndicator.style.background = '#ef4444';
+                                dashStatusIndicator.style.boxShadow = '0 0 6px #ef4444';
+                            }
                         }
                     }
 
                     
+
+                    // Create confirmation modal
+                    function showConfirmModal(title, message, onConfirm) {
+                        const overlay = document.createElement('div');
+                        overlay.id = 'confirmOverlay';
+                        overlay.style.cssText = 'display:block; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:9998; backdrop-filter:blur(4px);';
+                        
+                        const modal = document.createElement('div');
+                        modal.id = 'confirmModal';
+                        modal.style.cssText = 'display:flex; position:fixed; inset:0; z-index:9999; align-items:center; justify-content:center;';
+                        
+                        modal.innerHTML = `
+                            <div style="background:#ffffff; width:90%; max-width:420px; border-radius:12px; box-shadow:0 20px 40px rgba(0,0,0,0.25); overflow:hidden; animation:modalSlideIn 0.3s ease-out;">
+                                <div style="padding:18px 20px; border-bottom:1px solid #eef2f7; display:flex; align-items:center; gap:10px;">
+                                    <div style="width:36px; height:36px; border-radius:50%; background:#fef3c7; color:#d97706; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:20px;">!</div>
+                                    <div style="font-size:18px; font-weight:700; color:#0f172a;">${title}</div>
+                                </div>
+                                <div style="padding:18px 20px; color:#334155; font-size:15px; line-height:1.6;">
+                                    ${message}
+                                </div>
+                                <div style="padding:14px 16px; display:flex; gap:10px; justify-content:flex-end; background:#f8fafc; border-top:1px solid #eef2f7;">
+                                    <button type="button" id="modalCancelBtn" style="padding:10px 20px; background:#e5e7eb; color:#111827; border:none; border-radius:8px; font-weight:600; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.background='#d1d5db'" onmouseout="this.style.background='#e5e7eb'">না</button>
+                                    <button type="button" id="modalConfirmBtn" style="padding:10px 20px; background:#0a4d2e; color:#fff; border:none; border-radius:8px; font-weight:600; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.background='#0d6639'" onmouseout="this.style.background='#0a4d2e'">হ্যাঁ</button>
+                                </div>
+                            </div>
+                        `;
+                        
+                        document.body.appendChild(overlay);
+                        document.body.appendChild(modal);
+                        
+                        const closeModal = () => {
+                            overlay.remove();
+                            modal.remove();
+                        };
+                        
+                        document.getElementById('modalCancelBtn').onclick = closeModal;
+                        overlay.onclick = closeModal;
+                        
+                        document.getElementById('modalConfirmBtn').onclick = () => {
+                            closeModal();
+                            if (onConfirm) onConfirm();
+                        };
+                        
+                        // ESC key to close
+                        const escHandler = (e) => {
+                            if (e.key === 'Escape') {
+                                closeModal();
+                                window.removeEventListener('keydown', escHandler);
+                            }
+                        };
+                        window.addEventListener('keydown', escHandler);
+                    }
 
                     window.saveSocialItem = async function(id){
                         const card = document.querySelector(`[data-social-id="${id}"]`);
@@ -1581,14 +1968,31 @@
                         const link = card.querySelector('.sm-link').value.trim();
                         const imageFile = card.querySelector('.sm-image').files[0];
                         const statusEl = card.querySelector(`.save-status-${id}`);
+                        
                         if(!title){
-                            if(typeof alertUser==='function'){ alertUser('ত্রুটি','অনুগ্রহ করে শিরোনাম পূরণ করুন।'); }
-                            if(statusEl) statusEl.textContent = '';
+                            showConfirmModal('ত্রুটি', 'অনুগ্রহ করে শিরোনাম পূরণ করুন।', null);
                             return;
                         }
-                        if(statusEl){ statusEl.textContent='সংরক্ষণ করা হচ্ছে...'; statusEl.style.color='#666'; }
+                        
+                        const isNew = id.toString().startsWith('new_');
+                        const actionText = isNew ? 'সংরক্ষণ' : 'আপডেট';
+                        
+                        showConfirmModal(
+                            `${actionText} নিশ্চিতকরণ`,
+                            `আপনি কি এই আইটেমটি ${actionText} করতে চান?`,
+                            async () => {
+                                await performSave(id, card, title, content, link, imageFile, statusEl, isNew);
+                            }
+                        );
+                    };
+                    
+                    async function performSave(id, card, title, content, link, imageFile, statusEl, isNew){
+                        if(statusEl){ 
+                            statusEl.textContent='সংরক্ষণ করা হচ্ছে...'; 
+                            statusEl.style.color='#666'; 
+                            statusEl.style.background='#f3f4f6';
+                        }
                         try{
-                            const isNew = id.toString().startsWith('new_');
                             const url = isNew ? '/admin/social-media' : `/admin/social-media/${id}`;
                             const method = 'POST'; // use POST always; spoof PUT via _method to keep file uploads reliable
                             const fd = new FormData();
@@ -1603,93 +2007,567 @@
                             if(!resp.ok){ const t=await resp.text(); console.error('Server error:', t); throw new Error('Bad response '+resp.status); }
                             const result = await resp.json();
                             if(result.success){
-                                if(statusEl){ statusEl.textContent='✓ সংরক্ষিত'; statusEl.style.color='#10b981'; setTimeout(()=>{ statusEl.textContent=''; }, 3000); }
+                                if(statusEl){ 
+                                    statusEl.textContent='✓ সফলভাবে সংরক্ষিত হয়েছে'; 
+                                    statusEl.style.color='#059669'; 
+                                    statusEl.style.background='#d1fae5';
+                                    setTimeout(()=>{ statusEl.textContent=''; statusEl.style.background='transparent'; }, 4000); 
+                                }
                                 try{ localStorage.setItem('refreshSocialMedia', String(Date.now())); }catch(_){ }
                                 // Don't reload items - keep the current card as is
                                 // Update the card's data-social-id if it was a new item
-                                const isNew = id.toString().startsWith('new_');
-                                if(isNew && result.data && result.data.id){
+                                const wasNew = id.toString().startsWith('new_');
+                                if(wasNew && result.data && result.data.id){
                                     card.setAttribute('data-social-id', result.data.id);
-                                    // Update button text from "যোগ করুন" to "আপডেট"
+                                    // Update button text from "সংরক্ষণ" to "আপডেট"
                                     const saveBtn = card.querySelector('.btn.btn-primary');
-                                    if(saveBtn) saveBtn.textContent = 'আপডেট';
+                                    if(saveBtn) saveBtn.textContent = '✓ আপডেট';
+                                    
+                                    // Add edit button in header
+                                    const headerBtns = card.querySelector('[style*="display:flex; gap:8px"]');
+                                    if(headerBtns && !card.querySelector('.edit-mode-btn')){
+                                        const editBtn = document.createElement('button');
+                                        editBtn.type = 'button';
+                                        editBtn.className = 'edit-mode-btn';
+                                        editBtn.onclick = () => toggleEditMode(result.data.id);
+                                        editBtn.textContent = '✎ সম্পাদনা';
+                                        editBtn.style = 'background:#3b82f6; color:white; border:none; border-radius:6px; padding:6px 12px; font-size:12px; cursor:pointer; font-weight:500; transition: all 0.2s; display:none;';
+                                        editBtn.onmouseover = function(){ this.style.background='#2563eb'; };
+                                        editBtn.onmouseout = function(){ this.style.background='#3b82f6'; };
+                                        headerBtns.insertBefore(editBtn, headerBtns.firstChild);
+                                    }
+                                    
+                                    // Add cancel button if not exists
+                                    const btnContainer = card.querySelector('.action-buttons');
+                                    if(btnContainer && !card.querySelector('.cancel-edit-btn')){
+                                        const cancelBtn = document.createElement('button');
+                                        cancelBtn.type = 'button';
+                                        cancelBtn.className = 'cancel-edit-btn';
+                                        cancelBtn.onclick = () => toggleEditMode(result.data.id);
+                                        cancelBtn.textContent = '✕ বাতিল';
+                                        cancelBtn.style = 'padding:10px 20px; font-size:14px; font-weight:600; background:#6b7280; border:none; border-radius:6px; color:white; cursor:pointer; transition: all 0.2s; box-shadow: 0 2px 4px rgba(107,114,128,0.2); display:none;';
+                                        cancelBtn.onmouseover = function(){ this.style.background='#4b5563'; this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 6px rgba(107,114,128,0.3)'; };
+                                        cancelBtn.onmouseout = function(){ this.style.background='#6b7280'; this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(107,114,128,0.2)'; };
+                                        saveBtn.parentNode.insertBefore(cancelBtn, saveBtn.nextSibling);
+                                    }
+                                    
                                     // Add delete button if not exists
-                                    const btnContainer = card.querySelector('[style*="justify-content:center"]');
                                     if(btnContainer && !card.querySelector('.delete-btn')){
                                         const deleteBtn = document.createElement('button');
                                         deleteBtn.type = 'button';
                                         deleteBtn.className = 'delete-btn';
                                         deleteBtn.onclick = () => deleteSocialItem(result.data.id);
-                                        deleteBtn.textContent = 'মুছুন';
-                                        saveBtn.parentNode.insertBefore(deleteBtn, saveBtn.nextSibling);
+                                        deleteBtn.textContent = '✕ মুছুন';
+                                        deleteBtn.style = 'padding:10px 20px; font-size:14px; font-weight:600; background:#ef4444; border:none; border-radius:6px; color:white; cursor:pointer; transition: all 0.2s; box-shadow: 0 2px 4px rgba(239,68,68,0.2);';
+                                        deleteBtn.onmouseover = function(){ this.style.background='#dc2626'; this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 6px rgba(239,68,68,0.3)'; };
+                                        deleteBtn.onmouseout = function(){ this.style.background='#ef4444'; this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(239,68,68,0.2)'; };
+                                        const cancelBtn = card.querySelector('.cancel-edit-btn');
+                                        if(cancelBtn){
+                                            cancelBtn.parentNode.insertBefore(deleteBtn, cancelBtn.nextSibling);
+                                        }
+                                    }
+                                    
+                                    // Update items array with new item (check for duplicates first)
+                                    const existingIndex = items.findIndex(item => item.id == result.data.id);
+                                    if(existingIndex === -1){
+                                        items.push({
+                                            id: result.data.id,
+                                            title: title,
+                                            content: content,
+                                            link: link,
+                                            image_url: result.data.image_url || ''
+                                        });
+                                    }
+                                    
+                                    // Exit edit mode after successful save for new items
+                                    setCardEditMode(card, false);
+                                }
+                                
+                                // Exit edit mode after successful save for existing items
+                                if(!wasNew){
+                                    setCardEditMode(card, false);
+                                    // Update items array with updated values
+                                    const itemIndex = items.findIndex(item => item.id == id);
+                                    if(itemIndex !== -1){
+                                        items[itemIndex].title = title;
+                                        items[itemIndex].content = content;
+                                        items[itemIndex].link = link;
+                                        if(result.data.image_url) items[itemIndex].image_url = result.data.image_url;
                                     }
                                 }
+                                
                                 saveCardsToStorage();
+                                // Broadcast preview immediately after successful save
+                                setTimeout(broadcastPreview, 50);
                             } else {
-                                if(statusEl){ statusEl.textContent='✗ ত্রুটি'; statusEl.style.color='#ef4444'; }
-                                if(typeof alertUser==='function'){ alertUser('ত্রুটি','কিছু ভুল হয়েছে।'); }
+                                if(statusEl){ 
+                                    statusEl.textContent='✗ সংরক্ষণ ব্যর্থ হয়েছে'; 
+                                    statusEl.style.color='#dc2626'; 
+                                    statusEl.style.background='#fee2e2';
+                                    setTimeout(()=>{ statusEl.textContent=''; statusEl.style.background='transparent'; }, 4000);
+                                }
+                                if(typeof alertUser==='function'){ alertUser('ত্রুটি','কিছু ভুল হয়েছে। আবার চেষ্টা করুন।'); }
                             }
                         }catch(err){
                             console.error(err);
-                            if(statusEl){ statusEl.textContent='✗ ত্রুটি'; statusEl.style.color='#ef4444'; }
-                            if(typeof alertUser==='function'){ alertUser('ত্রুটি','নেটওয়ার্ক ত্রুটি।'); }
+                            if(statusEl){ 
+                                statusEl.textContent='✗ নেটওয়ার্ক ত্রুটি'; 
+                                statusEl.style.color='#dc2626'; 
+                                statusEl.style.background='#fee2e2';
+                                setTimeout(()=>{ statusEl.textContent=''; statusEl.style.background='transparent'; }, 4000);
+                            }
+                            if(typeof alertUser==='function'){ alertUser('ত্রুটি','নেটওয়ার্ক সংযোগ ত্রুটি। আবার চেষ্টা করুন।'); }
                         }
                     }
 
                     window.deleteSocialItem = async function(id){
-                        if(!confirm('আপনি কি এই আইটেম মুছে ফেলতে চান?')) return;
+                        const card = document.querySelector(`[data-social-id="${id}"]`);
+                        const statusEl = card?.querySelector(`.save-status-${id}`);
+                        
+                        showConfirmModal(
+                            'মুছে ফেলার নিশ্চিতকরণ',
+                            'আপনি কি নিশ্চিত এই আইটেমটি মুছে ফেলতে চান? এই কাজটি পূর্বাবস্থায় ফেরানো যাবে না।',
+                            async () => {
+                                await performDelete(id, card, statusEl);
+                            }
+                        );
+                    };
+                    
+                    async function performDelete(id, card, statusEl){
+                        
+                        if(statusEl){
+                            statusEl.textContent='মুছে ফেলা হচ্ছে...';
+                            statusEl.style.color='#666';
+                            statusEl.style.background='#f3f4f6';
+                        }
+                        
                         try{
                             const token = (document.querySelector('meta[name="csrf-token"]').content || document.getElementById('csrfToken')?.value || '').toString();
-                            const resp = await fetch(`/admin/social-media/${id}`, { method:'DELETE', headers:{ 'X-CSRF-TOKEN': token } });
+                            const resp = await fetch(`/admin/social-media/${id}`, { method:'DELETE', headers:{ 'X-CSRF-TOKEN': token, 'Accept':'application/json' } });
                             const result = await resp.json();
                             if(result.success){
-                                if(typeof alertUser==='function'){ alertUser('সফল', result.message); }
-                                // Remove the card from DOM instead of reloading
-                                const card = document.querySelector(`[data-social-id="${id}"]`);
-                                if(card) card.remove();
+                                if(typeof alertUser==='function'){ alertUser('সফল', 'আইটেমটি সফলভাবে মুছে ফেলা হয়েছে।'); }
+                                // Fade out animation before removing
+                                if(card){
+                                    card.style.transition = 'all 0.3s ease';
+                                    card.style.opacity = '0';
+                                    card.style.transform = 'scale(0.95)';
+                                    setTimeout(() => {
+                                        card.remove();
+                                        // Update items array
+                                        const itemIndex = items.findIndex(item => item.id == id);
+                                        if(itemIndex !== -1){
+                                            items.splice(itemIndex, 1);
+                                        }
+                                        // Check if container is empty
+                                        const container = document.getElementById('socialItemsContainer');
+                                        if(container && container.querySelectorAll('.card-editor').length === 0){
+                                            container.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 2rem; color: #666;">কোনো আইটেম নেই। "আইটেম যোগ করুন" বাটনে ক্লিক করে নতুন আইটেম যোগ করুন।</div>';
+                                        }
+                                        // Broadcast preview after deletion
+                                        broadcastPreview();
+                                    }, 300);
+                                }
                                 try{ localStorage.setItem('refreshSocialMedia', String(Date.now())); }catch(_){ }
                             } else {
-                                if(typeof alertUser==='function'){ alertUser('ত্রুটি','কিছু ভুল হয়েছে।'); }
+                                if(statusEl){
+                                    statusEl.textContent='✗ মুছতে ব্যর্থ';
+                                    statusEl.style.color='#dc2626';
+                                    statusEl.style.background='#fee2e2';
+                                    setTimeout(()=>{ statusEl.textContent=''; statusEl.style.background='transparent'; }, 3000);
+                                }
+                                if(typeof alertUser==='function'){ alertUser('ত্রুটি','আইটেম মুছতে সমস্যা হয়েছে।'); }
                             }
-                        }catch(err){ console.error(err); if(typeof alertUser==='function'){ alertUser('ত্রুটি','নেটওয়ার্ক ত্রুটি।'); } }
+                        }catch(err){ 
+                            console.error(err); 
+                            if(statusEl){
+                                statusEl.textContent='✗ নেটওয়ার্ক ত্রুটি';
+                                statusEl.style.color='#dc2626';
+                                statusEl.style.background='#fee2e2';
+                                setTimeout(()=>{ statusEl.textContent=''; statusEl.style.background='transparent'; }, 3000);
+                            }
+                            if(typeof alertUser==='function'){ alertUser('ত্রুটি','নেটওয়ার্ক সংযোগ ত্রুটি।'); } 
+                        }
                     }
 
                     window.previewSocialImage = function(input, id){
                         const previewDiv = document.querySelector(`.image-preview-${id}`);
                         if(input.files && input.files[0]){
+                            const file = input.files[0];
+                            // Validate file size (max 5MB)
+                            if(file.size > 5 * 1024 * 1024){
+                                if(typeof alertUser==='function'){ alertUser('ত্রুটি','ফাইলের আকার ৫ এমবি এর কম হতে হবে।'); }
+                                input.value = '';
+                                return;
+                            }
+                            // Validate file type
+                            if(!file.type.startsWith('image/')){
+                                if(typeof alertUser==='function'){ alertUser('ত্রুটি','অনুগ্রহ করে একটি ছবি ফাইল নির্বাচন করুন।'); }
+                                input.value = '';
+                                return;
+                            }
                             const reader = new FileReader();
                             reader.onload = function(e){
-                                previewDiv.innerHTML = `<img src="${e.target.result}" alt="Preview" style="max-width:100%; max-height:120px; border-radius:8px; border:1px solid #e5e7eb;" />`;
+                                previewDiv.innerHTML = `<img src="${e.target.result}" alt="Preview" style="max-width:100%; max-height:150px; border-radius:8px; border:2px solid #e5e7eb; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" />`;
                                 broadcastPreview();
                             };
-                            reader.readAsDataURL(input.files[0]);
+                            reader.readAsDataURL(file);
                         }
                     }
 
                     window.removeCardFromForm = function(id){
                         const card = document.querySelector(`[data-social-id="${id}"]`);
-                        if(card){
-                            // Just remove from DOM, don't delete from database
-                            card.remove();
-                            broadcastPreview();
-                            saveCardsToStorage();
-                        }
+                        if(!card) return;
+                        
+                        showConfirmModal(
+                            'সরানোর নিশ্চিতকরণ',
+                            'আপনি কি এই আইটেমটি ফর্ম থেকে সরাতে চান?',
+                            () => {
+                                // Just remove from DOM, don't delete from database
+                                card.style.transition = 'all 0.3s ease';
+                                card.style.opacity = '0';
+                                card.style.transform = 'scale(0.95)';
+                                setTimeout(() => {
+                                    card.remove();
+                                    broadcastPreview();
+                                    saveCardsToStorage();
+                                    updateDashboardStatus();
+                                }, 300);
+                            }
+                        );
                     }
 
                     document.getElementById('addSocialItemBtn').addEventListener('click', ()=>{
-                        const card = createCard();
-                        container.appendChild(card);
-                        card.scrollIntoView({ behavior:'smooth', block:'nearest' });
-                        broadcastPreview();
-                        saveCardsToStorage();
+                        showConfirmModal(
+                            'নতুন আইটেম যোগ করুন',
+                            'আপনি কি একটি নতুন সোশ্যাল মিডিয়া আইটেম যোগ করতে চান?',
+                            () => {
+                                // Remove "no items" message if it exists
+                                const noItemsMsg = container.querySelector('div[style*="grid-column: 1 / -1"]');
+                                if(noItemsMsg && noItemsMsg.textContent.includes('কোনো আইটেম নেই')){
+                                    noItemsMsg.remove();
+                                }
+                                
+                                const card = createCard();
+                                container.appendChild(card);
+                                card.scrollIntoView({ behavior:'smooth', block:'nearest' });
+                                broadcastPreview();
+                                saveCardsToStorage();
+                                updateDashboardStatus();
+                            }
+                        );
                     });
 
-                    // Load saved cards from localStorage on page load
-                    loadCardsFromStorage();
-                    // Attach handlers to loaded cards
-                    attachLiveHandlers();
-                    broadcastPreview();
+                    // Initialize: Load items from API to get fresh data
+                    loadItems();
                     
+                })();
+            </script>
+        </div>
+    </div>
+
+    <div id="home-hero-slider" style="margin-top:1rem;">
+        <div class="table-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+                <div>
+                    <h2 style="margin:0 0 0.5rem 0;">হিরো স্লাইডার ম্যানেজমেন্ট</h2>
+                    <div id="heroSliderStatus" style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #6b7280;">
+                        <span id="heroStatusIndicator" style="width: 8px; height: 8px; border-radius: 50%; background: #10b981; box-shadow: 0 0 6px #10b981;"></span>
+                        <span id="heroStatusText">ডাটাবেস সংযুক্ত</span>
+                        <span id="heroItemCount" style="margin-left: 8px; padding: 2px 8px; background: #e0f2fe; color: #0369a1; border-radius: 12px; font-weight: 500;">0 টি স্লাইড</span>
+                    </div>
+                </div>
+                <button id="addHeroSlideBtn" class="btn btn-primary" type="button" style="display:flex; align-items:center; gap:8px;">
+                    <span>+</span>
+                    <span>স্লাইড যোগ করুন</span>
+                </button>
+            </div>
+            <input type="hidden" id="csrfTokenHero" value="{{ csrf_token() }}">
+            <style>
+                #home-hero-slider .hero-slider-grid { 
+                    display: grid;
+                    gap: 16px;
+                }
+                #home-hero-slider .slider-card-editor { 
+                    border:1px solid #e5e7eb; 
+                    border-radius:12px; 
+                    padding:16px; 
+                    background:#fafafa; 
+                    position:relative;
+                }
+                #home-hero-slider .slider-card-editor h4 { 
+                    margin:0 0 12px; 
+                    font-size:15px; 
+                    display:flex; 
+                    justify-content:space-between; 
+                    align-items:center;
+                    color: #0a4d2e;
+                    font-weight: 600;
+                }
+                #home-hero-slider .slider-card-editor input[type="text"],
+                #home-hero-slider .slider-card-editor input[type="url"],
+                #home-hero-slider .slider-card-editor input[type="number"],
+                #home-hero-slider .slider-card-editor select,
+                #home-hero-slider .slider-card-editor textarea {
+                    height:46px; 
+                    padding:10px 12px; 
+                    font-size:15px; 
+                    border-radius:10px; 
+                    width:100%; 
+                    box-sizing:border-box; 
+                    border:1px solid #e5e7eb;
+                    margin-bottom: 8px;
+                }
+                #home-hero-slider .slider-card-editor textarea { 
+                    height:auto; 
+                    min-height:80px; 
+                    resize:vertical; 
+                }
+                #home-hero-slider .slider-card-editor .image-preview {
+                    margin: 8px 0;
+                    max-width: 100%;
+                    border-radius: 8px;
+                    overflow: hidden;
+                }
+                #home-hero-slider .slider-card-editor .image-preview img {
+                    width: 100%;
+                    max-height: 200px;
+                    object-fit: cover;
+                    border-radius: 8px;
+                }
+                #home-hero-slider .slider-card-editor .delete-btn { 
+                    background:#ef4444; 
+                    color:#fff; 
+                    border:none; 
+                    padding:10px 16px; 
+                    border-radius:6px; 
+                    cursor:pointer; 
+                    font-size:14px; 
+                    font-weight:500; 
+                }
+                #home-hero-slider .slider-card-editor .save-btn { 
+                    background:#10b981; 
+                    color:#fff; 
+                    border:none; 
+                    padding:10px 16px; 
+                    border-radius:6px; 
+                    cursor:pointer; 
+                    font-size:14px; 
+                    font-weight:500; 
+                    margin-right: 8px;
+                }
+                #home-hero-slider .form-row {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 12px;
+                }
+                @media (max-width: 960px){ 
+                    #home-hero-slider .form-row { 
+                        grid-template-columns:1fr 
+                    } 
+                }
+            </style>
+            
+            <div class="hero-slider-form">
+                <div id="heroSliderContainer" class="hero-slider-grid"></div>
+            </div>
+            <script>
+                (function(){
+                    const container = document.getElementById('heroSliderContainer');
+                    const addBtn = document.getElementById('addHeroSlideBtn');
+                    const statusText = document.getElementById('heroStatusText');
+                    const statusIndicator = document.getElementById('heroStatusIndicator');
+                    const itemCount = document.getElementById('heroItemCount');
+                    const csrfToken = document.getElementById('csrfTokenHero').value;
+                    
+                    let sliders = [];
+                    let sliderCounter = 0;
+
+                    function updateStatus(text, isError = false) {
+                        statusText.textContent = text;
+                        statusIndicator.style.background = isError ? '#ef4444' : '#10b981';
+                        statusIndicator.style.boxShadow = isError ? '0 0 6px #ef4444' : '0 0 6px #10b981';
+                    }
+
+                    function updateItemCount() {
+                        itemCount.textContent = `${sliders.length} টি স্লাইড`;
+                    }
+
+                    async function loadSliders() {
+                        try {
+                            const response = await fetch('/admin/hero-sliders');
+                            if (!response.ok) throw new Error('Failed to load');
+                            sliders = await response.json();
+                            renderSliders();
+                            updateStatus('ডাটাবেস সংযুক্ত');
+                            updateItemCount();
+                        } catch (error) {
+                            console.error('Error loading sliders:', error);
+                            updateStatus('লোড করতে ব্যর্থ', true);
+                        }
+                    }
+
+                    function createSliderCard(slider = null, index = null) {
+                        const id = slider ? slider.id : 'new_' + (++sliderCounter);
+                        const isNew = !slider;
+                        const displayIndex = index !== null ? index + 1 : (sliders.length + 1);
+                        
+                        const card = document.createElement('div');
+                        card.className = 'slider-card-editor';
+                        card.dataset.sliderId = id;
+                        
+                        const escapeHtml = (str) => (str || '').replace(/"/g, '&quot;').replace(/\n/g, '&#10;');
+                        
+                        card.innerHTML = `
+                            <h4>
+                                <span>স্লাইড ${displayIndex}</span>
+                                <div style="display:flex; gap:8px;">
+                                    <label style="display:flex; align-items:center; gap:4px; font-weight:normal; font-size:13px;">
+                                        <input type="checkbox" class="slider-active" ${slider?.is_active !== false ? 'checked' : ''} />
+                                        <span>সক্রিয়</span>
+                                    </label>
+                                </div>
+                            </h4>
+                            
+                            <div style="margin-bottom:12px;">
+                                <label style="display:block; margin-bottom:4px; font-size:13px; font-weight:500;">স্লাইড ছবি</label>
+                                <input type="file" class="slider-image" accept="image/*" style="width:100%; padding:6px; border:1px solid #e5e7eb; border-radius:6px;" />
+                                <div class="image-preview-${id}" style="margin-top:8px;">
+                                    ${slider?.image_url ? `<img src="${slider.image_url}" alt="Preview" style="max-width:100%; max-height:200px; border-radius:8px; border:1px solid #e5e7eb;" />` : ''}
+                                </div>
+                            </div>
+
+                            <input type="text" class="slider-title" placeholder="শিরোনাম (যেমন: আপনার স্বপ্নের বাড়ি)" value="${escapeHtml(slider?.title)}" />
+                            <input type="text" class="slider-subtitle" placeholder="সাব-টাইটেল (যেমন: জলজোছনা প্রজেক্টে)" value="${escapeHtml(slider?.subtitle)}" />
+                            <textarea class="slider-description" placeholder="বিবরণ">${escapeHtml(slider?.description)}</textarea>
+                            
+                            <div class="form-row">
+                                <input type="text" class="slider-primary-btn-text" placeholder="প্রাইমারি বাটন টেক্সট" value="${escapeHtml(slider?.primary_button_text)}" />
+                                <input type="text" class="slider-primary-btn-link" placeholder="প্রাইমারি বাটন লিংক" value="${escapeHtml(slider?.primary_button_link)}" />
+                            </div>
+                            
+                            <div class="form-row">
+                                <input type="text" class="slider-secondary-btn-text" placeholder="সেকেন্ডারি বাটন টেক্সট" value="${escapeHtml(slider?.secondary_button_text)}" />
+                                <input type="text" class="slider-secondary-btn-link" placeholder="সেকেন্ডারি বাটন লিংক" value="${escapeHtml(slider?.secondary_button_link)}" />
+                            </div>
+
+                            <input type="number" class="slider-order" placeholder="ক্রম (Order)" value="${slider?.order || 0}" min="0" />
+                            
+                            <div style="margin-top:12px; display:flex; gap:8px;">
+                                <button class="save-btn" onclick="saveSlider('${id}', ${isNew})">সেভ করুন</button>
+                                ${!isNew ? `<button class="delete-btn" onclick="deleteSlider('${id}')">ডিলিট করুন</button>` : ''}
+                            </div>
+                        `;
+                        
+                        return card;
+                    }
+
+                    function renderSliders() {
+                        container.innerHTML = '';
+                        sliders.forEach((slider, index) => {
+                            container.appendChild(createSliderCard(slider, index));
+                        });
+                    }
+
+                    window.saveSlider = async function(id, isNew) {
+                        const card = document.querySelector(`[data-slider-id="${id}"]`);
+                        if (!card) return;
+
+                        const formData = new FormData();
+                        formData.append('title', card.querySelector('.slider-title').value);
+                        formData.append('subtitle', card.querySelector('.slider-subtitle').value);
+                        formData.append('description', card.querySelector('.slider-description').value);
+                        formData.append('primary_button_text', card.querySelector('.slider-primary-btn-text').value);
+                        formData.append('primary_button_link', card.querySelector('.slider-primary-btn-link').value);
+                        formData.append('secondary_button_text', card.querySelector('.slider-secondary-btn-text').value);
+                        formData.append('secondary_button_link', card.querySelector('.slider-secondary-btn-link').value);
+                        formData.append('order', card.querySelector('.slider-order').value);
+                        formData.append('is_active', card.querySelector('.slider-active').checked ? '1' : '0');
+                        
+                        const imageInput = card.querySelector('.slider-image');
+                        if (imageInput.files.length > 0) {
+                            formData.append('image', imageInput.files[0]);
+                        }
+
+                        try {
+                            const url = isNew ? '/admin/hero-sliders' : `/admin/hero-sliders/${id}`;
+                            const method = isNew ? 'POST' : 'PUT';
+                            
+                            const options = {
+                                method: method,
+                                headers: {
+                                    'X-CSRF-TOKEN': csrfToken
+                                },
+                                body: formData
+                            };
+
+                            // For PUT requests, we need to add _method field
+                            if (!isNew) {
+                                formData.append('_method', 'PUT');
+                                options.method = 'POST';
+                            }
+
+                            const response = await fetch(url, options);
+                            
+                            if (!response.ok) {
+                                const errorData = await response.json();
+                                throw new Error(errorData.message || 'Failed to save');
+                            }
+
+                            updateStatus(isNew ? 'নতুন স্লাইড যোগ হয়েছে' : 'স্লাইড আপডেট হয়েছে');
+                            await loadSliders();
+                            
+                            // Trigger refresh on frontend
+                            try {
+                                localStorage.setItem('refreshHeroSlider', Date.now().toString());
+                            } catch(e) {}
+                            
+                        } catch (error) {
+                            console.error('Error saving slider:', error);
+                            updateStatus('সেভ করতে ব্যর্থ', true);
+                            alert('স্লাইডার সেভ করতে সমস্যা হয়েছে');
+                        }
+                    };
+
+                    window.deleteSlider = async function(id) {
+                        if (!confirm('আপনি কি এই স্লাইডটি ডিলিট করতে চান?')) return;
+
+                        try {
+                            const response = await fetch(`/admin/hero-sliders/${id}`, {
+                                method: 'DELETE',
+                                headers: {
+                                    'X-CSRF-TOKEN': csrfToken,
+                                    'Content-Type': 'application/json'
+                                }
+                            });
+
+                            if (!response.ok) throw new Error('Failed to delete');
+
+                            updateStatus('স্লাইড ডিলিট হয়েছে');
+                            await loadSliders();
+                            
+                            // Trigger refresh on frontend
+                            try {
+                                localStorage.setItem('refreshHeroSlider', Date.now().toString());
+                            } catch(e) {}
+                            
+                        } catch (error) {
+                            console.error('Error deleting slider:', error);
+                            updateStatus('ডিলিট করতে ব্যর্থ', true);
+                            alert('স্লাইডার ডিলিট করতে সমস্যা হয়েছে');
+                        }
+                    };
+
+                    addBtn.addEventListener('click', () => {
+                        const newCard = createSliderCard();
+                        container.insertBefore(newCard, container.firstChild);
+                    });
+
+                    // Load sliders on page load
+                    loadSliders();
+                    
+                    // Reload sliders every 30 seconds
+                    setInterval(loadSliders, 30000);
                 })();
             </script>
         </div>

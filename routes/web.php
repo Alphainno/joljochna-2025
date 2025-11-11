@@ -5,6 +5,11 @@ use App\Http\Controllers\Admin\FooterSettingController;
 use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\SocialMediaController;
 use App\Http\Controllers\Admin\ContactFormFieldController;
+use App\Http\Controllers\Admin\HeroSliderController;
+use App\Http\Controllers\Admin\AboutSectionController;
+use App\Http\Controllers\Admin\ProjectSectionController;
+use App\Http\Controllers\Admin\OurProjectController;
+use App\Http\Controllers\Admin\BookingController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
 
@@ -51,6 +56,37 @@ Route::delete('/admin/contact-form-fields/{id}', [ContactFormFieldController::cl
 Route::get('/api/contact-form-button', function() {
     return response()->json(['buttonText' => 'পাঠান']);
 });
+
+// Hero Slider API routes
+Route::get('/api/hero-sliders', [HeroSliderController::class, 'getActive'])->name('api.hero-sliders.active');
+Route::get('/admin/hero-sliders', [HeroSliderController::class, 'index'])->name('admin.hero-sliders.index');
+Route::post('/admin/hero-sliders', [HeroSliderController::class, 'store'])->name('admin.hero-sliders.store');
+Route::put('/admin/hero-sliders/{id}', [HeroSliderController::class, 'update'])->name('admin.hero-sliders.update');
+Route::delete('/admin/hero-sliders/{id}', [HeroSliderController::class, 'destroy'])->name('admin.hero-sliders.destroy');
+
+// About Section API routes
+Route::get('/api/about-sections', [AboutSectionController::class, 'index'])->name('api.about-sections.index');
+Route::post('/admin/about-sections', [AboutSectionController::class, 'store'])->name('admin.about-sections.store');
+Route::delete('/admin/about-sections/{id}', [AboutSectionController::class, 'destroy'])->name('admin.about-sections.destroy');
+
+// Project Section API routes
+Route::get('/api/project-sections', [ProjectSectionController::class, 'index'])->name('api.project-sections.index');
+Route::post('/admin/project-sections', [ProjectSectionController::class, 'store'])->name('admin.project-sections.store');
+Route::delete('/admin/project-sections/{id}', [ProjectSectionController::class, 'destroy'])->name('admin.project-sections.destroy');
+
+// Our Projects API routes
+Route::get('/api/our-projects', [OurProjectController::class, 'index'])->name('api.our-projects.index');
+Route::post('/admin/our-projects', [OurProjectController::class, 'store'])->name('admin.our-projects.store');
+Route::put('/admin/our-projects/{id}', [OurProjectController::class, 'update'])->name('admin.our-projects.update');
+Route::delete('/admin/our-projects/{id}', [OurProjectController::class, 'destroy'])->name('admin.our-projects.destroy');
+
+// Bookings API routes
+Route::get('/api/bookings', [BookingController::class, 'index'])->name('api.bookings.index');
+Route::post('/api/bookings', [BookingController::class, 'store'])->name('api.bookings.store');
+Route::put('/admin/bookings/{id}/status', [BookingController::class, 'updateStatus'])->name('admin.bookings.update-status');
+Route::delete('/admin/bookings/{id}', [BookingController::class, 'destroy'])->name('admin.bookings.destroy');
+Route::post('/admin/bookings/bulk-delete', [BookingController::class, 'bulkDelete'])->name('admin.bookings.bulk-delete');
+Route::get('/admin/bookings/export', [BookingController::class, 'export'])->name('admin.bookings.export');
 
 // Auth routes (simple session-based)
 Route::get('/login', [AuthController::class, 'loginForm'])->name('login');

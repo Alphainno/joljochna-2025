@@ -23,7 +23,7 @@
                 @include('admin.footerTab')
 
                 <!-- Bookings Tab -->
-                @include('admin.booking')
+                @include('admin.bookings')
 
 
                 <!-- reports Tab -->

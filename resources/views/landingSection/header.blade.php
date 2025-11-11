@@ -2,7 +2,7 @@
         <div class="container-fluid">
             <!-- Logo -->
             <a class="navbar-brand d-flex align-items-center" href="#home" id="navBrand">
-                <img id="brandLogo" alt="Logo" style="display:none; height:80px; width:auto; margin-right:12px;" />
+                <img id="brandLogo" alt="Logo" style="display:none; height:70px; width:auto; margin-right:12px;" />
                 <i class="fas fa-home me-2 text-warning" id="brandIcon" style="font-size: 2.5rem;"></i>
             </a>
 

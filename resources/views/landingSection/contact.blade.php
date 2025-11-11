@@ -69,7 +69,7 @@
                     if (els.phoneNumbers && s.phoneNumbers) els.phoneNumbers.innerHTML = s.phoneNumbers;
                     if (els.emailIcon && s.emailIcon) els.emailIcon.textContent = s.emailIcon;
                     if (els.emailLabel && s.emailLabel) els.emailLabel.textContent = s.emailLabel;
-                    if (els.emailAddress && s.emailAddress) els.emailAddress.textContent = s.emailAddress;
+                    if (els.emailAddress && s.emailAddress) els.emailAddress.innerHTML = s.emailAddress;
                     if (els.webIcon && s.webIcon) els.webIcon.textContent = s.webIcon;
                     if (els.webLabel && s.webLabel) els.webLabel.textContent = s.webLabel;
                     if (els.webAddress && s.webAddress) els.webAddress.textContent = s.webAddress;
@@ -111,7 +111,7 @@
                         return;
                     }
 
-                    formFields.forEach(field => {
+                    formFields.forEach((field, index) => {
                         const formGroup = document.createElement('div');
                         formGroup.className = 'form-group';
 
@@ -119,12 +119,21 @@
                         label.textContent = field.label;
                         formGroup.appendChild(label);
 
+                        const isFirstField = index === 0;
+                        const isLastField = index === formFields.length - 1;
+                        
                         let input;
-                        if (field.type === 'textarea') {
+                        // First field is always normal input, last field is always textarea
+                        if (isLastField || (field.type === 'textarea' && !isFirstField)) {
                             input = document.createElement('textarea');
+                            // Last field gets extra height
+                            if (isLastField) {
+                                input.style.minHeight = '120px';
+                                input.style.height = '120px';
+                            }
                         } else {
                             input = document.createElement('input');
-                            input.type = field.type;
+                            input.type = isFirstField ? 'text' : field.type;
                         }
                         
                         input.placeholder = field.placeholder || '';
@@ -192,6 +201,74 @@
 
                 loadFormFields();
                 loadSubmitButtonText();
+
+                // Handle form submission
+                const form = document.getElementById('dynamicContactForm');
+                if (form) {
+                    form.addEventListener('submit', async function(e) {
+                        e.preventDefault();
+                        
+                        const submitBtn = document.getElementById('contactSubmitBtn');
+                        const originalText = submitBtn.textContent;
+                        
+                        // Collect form data
+                        const formData = {};
+                        const inputs = form.querySelectorAll('input, textarea, select');
+                        
+                        inputs.forEach(input => {
+                            const label = input.previousElementSibling?.textContent || '';
+                            
+                            // Map to expected field names
+                            if (label.includes('নাম') || label.toLowerCase().includes('name')) {
+                                formData.name = input.value;
+                            } else if (label.includes('ফোন') || label.toLowerCase().includes('phone')) {
+                                formData.phone = input.value;
+                            } else if (label.includes('ইমেইল') || label.toLowerCase().includes('email')) {
+                                formData.email = input.value;
+                            } else if (label.includes('প্লট') || label.toLowerCase().includes('plot')) {
+                                formData.plot_size = input.value;
+                            } else if (label.includes('বার্তা') || label.toLowerCase().includes('message')) {
+                                formData.message = input.value;
+                            }
+                        });
+
+                        // Validate
+                        if (!formData.name || !formData.phone || !formData.email) {
+                            alert('অনুগ্রহ করে সকল প্রয়োজনীয় তথ্য পূরণ করুন');
+                            return;
+                        }
+
+                        // Show loading
+                        submitBtn.textContent = 'পাঠানো হচ্ছে...';
+                        submitBtn.disabled = true;
+
+                        try {
+                            const response = await fetch('/api/bookings', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
+                                },
+                                body: JSON.stringify(formData)
+                            });
+
+                            const result = await response.json();
+
+                            if (result.success) {
+                                alert('✓ ' + result.message);
+                                form.reset();
+                            } else {
+                                throw new Error(result.message || 'Submission failed');
+                            }
+                        } catch (error) {
+                            console.error('Error submitting booking:', error);
+                            alert('✗ বুকিং জমা দিতে ব্যর্থ হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।');
+                        } finally {
+                            submitBtn.textContent = originalText;
+                            submitBtn.disabled = false;
+                        }
+                    });
+                }
             })();
         </script>
     </section>

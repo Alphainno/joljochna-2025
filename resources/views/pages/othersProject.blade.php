@@ -13,6 +13,8 @@
     .hero-section {
       height: 100vh;
       background: linear-gradient(to right, rgba(10, 77, 46, 0.8), rgba(10, 77, 46, 0.3)), url('https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=1500&q=80') center/cover no-repeat;
+      background-size: cover;
+      background-position: center;
       color: #fff;
       display: flex;
       flex-direction: column;
@@ -20,17 +22,28 @@
       align-items: center;
       text-align: center;
       padding: 0 20px;
+      position: relative;
     }
 
     .hero-section h1 {
       font-size: 3rem;
       font-weight: 700;
+      color: #ffffff;
+      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+      margin-bottom: 15px;
+      position: relative;
+      z-index: 10;
     }
 
     .hero-section p {
       font-size: 1.3rem;
       margin-top: 10px;
       max-width: 700px;
+      color: #ffffff;
+      text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+      line-height: 1.6;
+      position: relative;
+      z-index: 10;
     }
 
     /* Introduction Section */
@@ -143,189 +156,35 @@
     }
   </style>
   <!-- Hero Section -->
-  <section class="hero-section">
-    <h1 id="othersHeroTitle">আমাদের অন্যান্য প্রকল্প</h1>
-    <p id="othersHeroSubtitle">নেক্স রিয়েল এস্টেট এর অসাধারণ কিছু প্রকল্পের এক ঝলক।</p>
+  <section id="projectsHeroSection" class="hero-section">
+    <h1 id="projectsHeroTitle">আমাদের অন্যান্য প্রকল্প</h1>
+    <p id="projectsHeroSubtitle">নেক্স রিয়েল এস্টেট এর অসাধারণ কিছু প্রকল্পের এক ঝলক।</p>
+    <p id="projectsHeroContent" style="font-size: 1.1rem; margin-top: 10px; max-width: 800px;"></p>
   </section>
 
-  <!-- Intro Section -->
+  <!-- Intro Section (Slogan) -->
   <section class="intro-section">
-    <img src="https://cdn-icons-png.flaticon.com/512/3256/3256013.png" alt="Logo">
+    <img id="projectsSloganLogo" src="https://cdn-icons-png.flaticon.com/512/3256/3256013.png" alt="Logo">
     <div class="text-content">
-      <h2>বিশ্বাসের প্রতীক NEX Real Estate</h2>
-      <p>আমরা বাংলাদেশে প্রিমিয়াম রিয়েল এস্টেট উন্নয়নে কাজ করছি। উন্নত মান, আইনি নিশ্চয়তা এবং আধুনিক সুবিধা দিয়ে প্রতিটি প্রকল্প তৈরি করা হয়েছে আপনার জীবনকে সুন্দর ও নিরাপদ করতে।</p>
+      <h2 id="projectsSloganTitle">বিশ্বাসের প্রতীক NEX Real Estate</h2>
+      <p id="projectsSloganContent">আমরা বাংলাদেশে প্রিমিয়াম রিয়েল এস্টেট উন্নয়নে কাজ করছি। উন্নত মান, আইনি নিশ্চয়তা এবং আধুনিক সুবিধা দিয়ে প্রতিটি প্রকল্প তৈরি করা হয়েছে আপনার জীবনকে সুন্দর ও নিরাপদ করতে।</p>
     </div>
   </section>
 
   <!-- Title -->
   <h2 class="section-title">Some of Our Incredible Projects</h2>
 
-  <!-- Project 1 -->
-  <section class="project-section">
-    <div class="project-image" style="background-image: url('https://images.unsplash.com/photo-1501183638710-841dd1904471?auto=format&fit=crop&w=1500&q=80');"></div>
-    <div class="project-content">
-      <h3>শান্তি নিবাস</h3>
-      <p>ঢাকার প্রাণকেন্দ্রে অবস্থিত শান্তি নিবাস, একটি আধুনিক ও বিলাসবহুল আবাসিক প্রকল্প। উন্নত যোগাযোগ ব্যবস্থা ও সবুজ পরিবেশে এটি একটি নিখুঁত ঠিকানা।</p>
-      <a href="#" class="btn">বিস্তারিত জানুন</a>
+  <!-- Dynamic Projects Container -->
+  <div id="our-projects-dynamic-container">
+    <!-- Projects will be loaded dynamically here -->
     </div>
-  </section>
 
-  <!-- Project 2 (Reverse Layout) -->
-  <section class="project-section">
-    <div class="project-content">
-      <h3>সবুজ ভিটা</h3>
-      <p>নদীর তীরে অবস্থিত "সবুজ ভিটা" প্রকৃতি প্রেমীদের জন্য স্বর্গ। এখানে আপনি পাবেন নির্মল বাতাস, সবুজ ছায়া, এবং শহরের কোলাহল থেকে দূরে এক প্রশান্ত জীবন।</p>
-      <a href="#" class="btn">বিস্তারিত জানুন</a>
+  <!-- Pagination Container -->
+  <div id="projects-pagination" style="display: none; text-align: center; margin: 40px 0; padding: 20px;">
+    <!-- Pagination buttons will be added here -->
     </div>
-    <div class="project-image" style="background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1500&q=80');"></div>
-  </section>
-
-  <!-- Project 3 -->
-  <section class="project-section">
-    <div class="project-image" style="background-image: url('https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&w=1500&q=80');"></div>
-    <div class="project-content">
-      <h3>প্রত্যাশা টাওয়ার</h3>
-      <p>খুলনার সেরা লোকেশনে নির্মিত এই অফিস টাওয়ারটি ব্যবসার জন্য উপযুক্ত। আধুনিক ডিজাইন, প্রশস্ত পার্কিং, এবং শক্তিশালী নিরাপত্তা ব্যবস্থা এটিকে করে তুলেছে আদর্শ।</p>
-      <a href="#" class="btn">বিস্তারিত জানুন</a>
-    </div>
-  </section>
-
-  <!-- Project 4 (Reverse Layout) -->
-  <section class="project-section">
-    <div class="project-content">
-      <h3>নির্মাণ প্লাজা</h3>
-      <p>বাণিজ্যিক দিক থেকে গুরুত্বপূর্ণ এই প্রকল্পে রয়েছে আধুনিক দোকানঘর ও অফিস স্পেস। টেকসই নির্মাণ ও নিরাপদ বিনিয়োগের জন্য এটি অন্যতম সেরা পছন্দ।</p>
-      <a href="#" class="btn">বিস্তারিত জানুন</a>
-    </div>
-    <div class="project-image" style="background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1500&q=80');"></div>
-  </section>
-
-    <!-- Project Slider Section -->
-  <section class="project-slider-section py-5">
-    <div class="container-fluid">
-      <h2 class="text-center mb-4" style="color:#0a4d2e; font-weight:700;">Explore More Projects</h2>
-      <div class="slider-container">
-        <div class="slider-track">
-          <div class="slide">
-            <img src="https://images.unsplash.com/photo-1501183638710-841dd1904471?auto=format&fit=crop&w=1500&q=80" alt="Project 1">
-            <div class="slide-overlay">শান্তি নিবাস</div>
-          </div>
-          <div class="slide">
-            <img src="https://images.unsplash.com/photo-16005851543-be406161a56a0c?auto=format&fit=crop&w=1500&q=80" alt="Project 2">
-            <div class="slide-overlay">সবুজ ভিটা</div>
-          </div>
-          <div class="slide">
-            <img src="https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&w=1500&q=80" alt="Project 3">
-            <div class="slide-overlay">প্রত্যাশা টাওয়ার</div>
-          </div>
-          <div class="slide">
-            <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1500&q=80" alt="Project 4">
-            <div class="slide-overlay">নির্মাণ প্লাজা</div>
-          </div>
-          <div class="slide">
-            <img src="https://images.unsplash.com/photo-1560185127-6ed189bf04bb?auto=format&fit=crop&w=1500&q=80" alt="Project 5">
-            <div class="slide-overlay">গোল্ডেন হেভেন</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <script>
-    const slider = document.querySelector('.slider-container');
-    const track = document.querySelector('.slider-track');
-
-    let isDown = false;
-    let startX;
-    let scrollLeft;
-
-    slider.addEventListener('mousedown', (e) => {
-      isDown = true;
-      slider.classList.add('active');
-      startX = e.pageX - slider.offsetLeft;
-      scrollLeft = slider.scrollLeft;
-    });
-
-    slider.addEventListener('mouseleave', () => {
-      isDown = false;
-      slider.classList.remove('active');
-    });
-
-    slider.addEventListener('mouseup', () => {
-      isDown = false;
-      slider.classList.remove('active');
-    });
-
-    slider.addEventListener('mousemove', (e) => {
-      if (!isDown) return;
-      e.preventDefault();
-      const x = e.pageX - slider.offsetLeft;
-      const walk = (x - startX) * 2; // scroll speed
-      slider.scrollLeft = scrollLeft - walk;
-    });
-  </script>
 
   <style>
-    .project-slider-section {
-      background-color: #f9f9f9;
-    }
-
-    .slider-container {
-      overflow-x: scroll;
-      overflow-y: hidden;
-      cursor: grab;
-      scroll-behavior: smooth;
-      white-space: nowrap;
-      user-select: none;
-    }
-
-    .slider-container.active {
-      cursor: grabbing;
-    }
-
-    .slider-track {
-      display: flex;
-      gap: 20px;
-      padding: 10px 50px;
-    }
-
-    .slide {
-      position: relative;
-      min-width: 350px;
-      height: 220px;
-      border-radius: 15px;
-      overflow: hidden;
-      transition: transform 0.3s ease;
-      flex-shrink: 0;
-    }
-
-    .slide img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 15px;
-      transition: transform 0.5s ease;
-    }
-
-    .slide:hover img {
-      transform: scale(1.1);
-    }
-
-    .slide-overlay {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: rgba(10, 77, 46, 0.7);
-      color: #fff;
-      text-align: center;
-      font-weight: 600;
-      font-size: 1.2rem;
-      padding: 10px;
-      border-bottom-left-radius: 15px;
-      border-bottom-right-radius: 15px;
-    }
-
     body
     {
       font-family: 'Noto Sans Bengali', sans-serif;
@@ -473,36 +332,341 @@
         height: 160px;
       }
     }
+
+    /* Pagination Styles */
+    .pagination-btn {
+      display: inline-block;
+      padding: 12px 20px;
+      margin: 0 5px;
+      background: #ffffff;
+      color: #0a4d2e;
+      border: 2px solid #0a4d2e;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 16px;
+    }
+
+    .pagination-btn:hover:not(:disabled) {
+      background: #0a4d2e;
+      color: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(10, 77, 46, 0.3);
+    }
+
+    .pagination-btn.active {
+      background: #0a4d2e;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(10, 77, 46, 0.4);
+    }
+
+    .pagination-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .pagination-info {
+      display: inline-block;
+      margin: 0 15px;
+      color: #666;
+      font-size: 15px;
+      font-weight: 600;
+    }
   </style>
 
   <script>
   (function(){
-      const defaults = {
-          title: 'আমাদের অন্যান্য প্রকল্প',
-          subtitle: 'নেক্স রিয়েল এস্টেট এর অসাধারণ কিছু প্রকল্পের এক ঝলক।'
-      };
-
-      const el = {
-          title: document.getElementById('othersHeroTitle'),
-          subtitle: document.getElementById('othersHeroSubtitle')
-      };
-
-      function read(){
-          try{ return JSON.parse(localStorage.getItem('projectsHeroSettings')||'{}'); }catch(e){ return {}; }
+      // Function to safely update text content
+      function updateText(id, text) {
+          const el = document.getElementById(id);
+          if (el && text) {
+              el.textContent = text;
+          }
       }
 
-      function apply(){
-          const saved = read();
-          const s = { ...defaults, ...saved };
-
-          if (el.title) el.title.textContent = s.title || defaults.title;
-          if (el.subtitle) el.subtitle.textContent = s.subtitle || s.description || defaults.subtitle;
+      // Function to safely update image src
+      function updateImage(id, imageUrl) {
+          const el = document.getElementById(id);
+          if (el && imageUrl) {
+              el.src = imageUrl;
+          }
       }
 
-      apply();
-      window.addEventListener('storage', (e)=>{ if(e.key==='projectsHeroSettings'){ apply(); } });
-      let last = localStorage.getItem('projectsHeroSettings');
-      setInterval(()=>{ const cur = localStorage.getItem('projectsHeroSettings'); if(cur!==last){ last=cur; apply(); } }, 1000);
+      // Function to update background image
+      function updateHeroBackground(imageUrl) {
+          const heroSection = document.getElementById('projectsHeroSection');
+          if (heroSection && imageUrl) {
+              heroSection.style.backgroundImage = `linear-gradient(to right, rgba(10, 77, 46, 0.8), rgba(10, 77, 46, 0.3)), url('${imageUrl}')`;
+          }
+      }
+
+      // Check for preview data in localStorage
+      function checkPreviewData() {
+          try {
+              // Check Hero Preview
+              const heroPreview = localStorage.getItem('projectsPreview_hero');
+              if (heroPreview) {
+                  const heroData = JSON.parse(heroPreview);
+                  if (heroData.title) updateText('projectsHeroTitle', heroData.title);
+                  if (heroData.subtitle) updateText('projectsHeroSubtitle', heroData.subtitle);
+                  if (heroData.content) updateText('projectsHeroContent', heroData.content);
+                  if (heroData.image_url) updateHeroBackground(heroData.image_url);
+                  return true; // Preview data found
+              }
+
+              // Check Slogan Preview
+              const sloganPreview = localStorage.getItem('projectsPreview_slogan');
+              if (sloganPreview) {
+                  const sloganData = JSON.parse(sloganPreview);
+                  if (sloganData.title) updateText('projectsSloganTitle', sloganData.title);
+                  if (sloganData.content) updateText('projectsSloganContent', sloganData.content);
+                  if (sloganData.logo_url) updateImage('projectsSloganLogo', sloganData.logo_url);
+                  return true; // Preview data found
+              }
+          } catch(e) {
+              console.error('Preview data error:', e);
+          }
+          return false;
+      }
+
+      // Load all project sections
+      async function loadProjectContent() {
+          // First check for preview data
+          const hasPreview = checkPreviewData();
+          
+          try {
+              // Load Hero Section from API
+              const heroResponse = await fetch('/api/project-sections?section_key=hero');
+              if (heroResponse.ok) {
+                  const hero = await heroResponse.json();
+                  if (hero && !localStorage.getItem('projectsPreview_hero')) {
+                      updateText('projectsHeroTitle', hero.title);
+                      updateText('projectsHeroSubtitle', hero.subtitle);
+                      updateText('projectsHeroContent', hero.content);
+                      if (hero.image_url) {
+                          updateHeroBackground(hero.image_url);
+                      }
+                  }
+              }
+
+              // Load Slogan Section from API
+              const sloganResponse = await fetch('/api/project-sections?section_key=slogan');
+              if (sloganResponse.ok) {
+                  const slogan = await sloganResponse.json();
+                  if (slogan && !localStorage.getItem('projectsPreview_slogan')) {
+                      updateText('projectsSloganTitle', slogan.title);
+                      updateText('projectsSloganContent', slogan.content);
+                      if (slogan.logo_url) {
+                          updateImage('projectsSloganLogo', slogan.logo_url);
+                      }
+                  }
+              }
+
+          } catch (error) {
+              console.error('Error loading project content:', error);
+          }
+      }
+
+      // Load content on page load
+      loadProjectContent();
+
+      // Listen for updates from dashboard
+      window.addEventListener('storage', function(e) {
+          if (e.key === 'refreshProjectsPage') {
+              loadProjectContent();
+          }
+          // Listen for preview updates
+          if (e.key && e.key.startsWith('projectsPreview_')) {
+              checkPreviewData();
+          }
+      });
+
+      // Reload every 30 seconds to catch updates
+      setInterval(loadProjectContent, 30000);
+
+      // ==================== LOAD OUR PROJECTS WITH PAGINATION ====================
+      
+      let allProjects = [];
+      let currentPage = 1;
+      const projectsPerPage = 4;
+
+      async function loadOurProjects() {
+          try {
+              const response = await fetch('/api/our-projects');
+              if (response.ok) {
+                  allProjects = await response.json();
+                  console.log('Frontend loaded projects:', allProjects);
+                  if (allProjects && allProjects.length > 0) {
+                      currentPage = 1; // Reset to first page
+                      renderOurProjects();
+                      renderPagination();
+                  } else {
+                      console.log('No projects found');
+                      document.getElementById('projects-pagination').style.display = 'none';
+                  }
+              } else {
+                  console.error('Failed to fetch projects:', response.status);
+              }
+          } catch (error) {
+              console.error('Error loading our projects:', error);
+          }
+      }
+
+      function renderOurProjects() {
+          const projects = getPaginatedProjects();
+          const container = document.getElementById('our-projects-dynamic-container');
+          if (!container) {
+              console.error('Container not found');
+              return;
+          }
+
+          container.innerHTML = '';
+          console.log('Rendering', projects.length, 'projects');
+
+          projects.forEach((project, index) => {
+              try {
+                  console.log(`Project ${index + 1} full data:`, project);
+                  console.log(`Project ${index + 1} image_url:`, project.image_url);
+                  console.log(`Project ${index + 1} image_path:`, project.image_path);
+                  
+                  const section = document.createElement('section');
+                  section.className = 'project-section';
+                  
+                  // Alternate layout (even index = image left, odd index = image right)
+                  const isReverse = index % 2 === 1;
+                  
+                  const imageDiv = document.createElement('div');
+                  imageDiv.className = 'project-image';
+                  
+                  if (project.image_url) {
+                      imageDiv.style.backgroundImage = `url('${project.image_url}')`;
+                      console.log(`Set background image for project ${index + 1}:`, project.image_url);
+                  } else if (project.image_path) {
+                      // Fallback: construct URL from image_path
+                      const imageUrl = '/storage/' + project.image_path;
+                      imageDiv.style.backgroundImage = `url('${imageUrl}')`;
+                      console.log(`Using fallback image path for project ${index + 1}:`, imageUrl);
+                  } else {
+                      console.warn(`Project ${index + 1} has no image - using placeholder`);
+                      imageDiv.style.backgroundImage = `url('https://via.placeholder.com/1500x900/0a4d2e/ffffff?text=${encodeURIComponent(project.title || 'No Image')}')`;
+                  }
+                  
+                  const contentDiv = document.createElement('div');
+                  contentDiv.className = 'project-content';
+                  
+                  const title = document.createElement('h3');
+                  title.textContent = project.title || 'Untitled Project';
+                  
+                  const description = document.createElement('p');
+                  description.textContent = project.description || '';
+                  
+                  const ctaLink = document.createElement('a');
+                  ctaLink.href = project.cta_link || '#';
+                  ctaLink.className = 'btn';
+                  ctaLink.textContent = project.cta_text || 'বিস্তারিত জানুন';
+                  
+                  contentDiv.appendChild(title);
+                  contentDiv.appendChild(description);
+                  contentDiv.appendChild(ctaLink);
+                  
+                  if (isReverse) {
+                      section.appendChild(contentDiv);
+                      section.appendChild(imageDiv);
+                  } else {
+                      section.appendChild(imageDiv);
+                      section.appendChild(contentDiv);
+                  }
+                  
+                  container.appendChild(section);
+                  console.log('✓ Rendered project:', project.title);
+              } catch (err) {
+                  console.error('Error rendering project:', err);
+              }
+          });
+      }
+
+      // Get projects for current page
+      function getPaginatedProjects() {
+          const startIndex = (currentPage - 1) * projectsPerPage;
+          const endIndex = startIndex + projectsPerPage;
+          return allProjects.slice(startIndex, endIndex);
+      }
+
+      // Render pagination buttons
+      function renderPagination() {
+          const paginationContainer = document.getElementById('projects-pagination');
+          if (!paginationContainer) return;
+
+          const totalPages = Math.ceil(allProjects.length / projectsPerPage);
+
+          // Hide pagination if only one page or less
+          if (totalPages <= 1) {
+              paginationContainer.style.display = 'none';
+              return;
+          }
+
+          paginationContainer.style.display = 'block';
+          paginationContainer.innerHTML = '';
+
+          // Previous button
+          const prevBtn = document.createElement('button');
+          prevBtn.className = 'pagination-btn';
+          prevBtn.textContent = '← পূর্ববর্তী';
+          prevBtn.disabled = currentPage === 1;
+          prevBtn.onclick = () => {
+              if (currentPage > 1) {
+                  currentPage--;
+                  renderOurProjects();
+                  renderPagination();
+                  scrollToProjects();
+              }
+          };
+          paginationContainer.appendChild(prevBtn);
+
+          // Page info
+          const pageInfo = document.createElement('span');
+          pageInfo.className = 'pagination-info';
+          pageInfo.textContent = `পৃষ্ঠা ${currentPage} / ${totalPages}`;
+          paginationContainer.appendChild(pageInfo);
+
+          // Next button
+          const nextBtn = document.createElement('button');
+          nextBtn.className = 'pagination-btn';
+          nextBtn.textContent = 'পরবর্তী →';
+          nextBtn.disabled = currentPage === totalPages;
+          nextBtn.onclick = () => {
+              if (currentPage < totalPages) {
+                  currentPage++;
+                  renderOurProjects();
+                  renderPagination();
+                  scrollToProjects();
+              }
+          };
+          paginationContainer.appendChild(nextBtn);
+      }
+
+      // Scroll to projects section
+      function scrollToProjects() {
+          const container = document.getElementById('our-projects-dynamic-container');
+          if (container) {
+              container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+      }
+
+      // Load projects on page load
+      loadOurProjects();
+
+      // Listen for updates from dashboard
+      window.addEventListener('storage', function(e) {
+          if (e.key === 'refreshOurProjects') {
+              loadOurProjects();
+          }
+      });
+
+      // Reload every 30 seconds
+      setInterval(loadOurProjects, 30000);
+
   })();
   </script>
 @endsection

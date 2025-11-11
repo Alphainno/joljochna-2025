@@ -14,6 +14,8 @@ class SocialMediaController extends Controller
         $items = SocialMedia::orderBy('order')
             ->orderBy('created_at', 'desc')
             ->get()
+            ->unique('id') // Ensure unique items by ID
+            ->values() // Reset array keys
             ->map(function ($item) {
                 if ($item->image_path) {
                     $item->image_url = asset('storage/' . ltrim($item->image_path, '/'));
@@ -51,6 +53,9 @@ class SocialMediaController extends Controller
             'is_active' => $validated['is_active'] ?? true,
         ]);
 
+        // Refresh to get the latest data
+        $item->refresh();
+        
         if ($item->image_path) {
             $item->image_url = asset('storage/' . ltrim($item->image_path, '/'));
         }
@@ -58,7 +63,7 @@ class SocialMediaController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'আইটেম সফলভাবে যোগ করা হয়েছে',
-            'item' => $item,
+            'data' => $item,
         ]);
     }
 
@@ -94,7 +99,7 @@ class SocialMediaController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'আইটেম সফলভাবে আপডেট করা হয়েছে',
-            'item' => $item,
+            'data' => $item,
         ]);
     }
 

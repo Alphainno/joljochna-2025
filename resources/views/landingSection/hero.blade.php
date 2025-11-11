@@ -760,17 +760,15 @@
 
     <div class="slider-wrap">
         <div class="slides" id="homeSlides">
-            <img id="homeSlide1" src="/images/Ningbo-Green-Belt-05_.jpg" alt="Slide 1" class="active" />
-            <img id="homeSlide2" src="/images/park-city_1127-4110.avif" alt="Slide 2" />
-            <img id="homeSlide3" src="/images/Alphainno Notice.jpg" alt="Slide 3" />
+            <!-- Slides will be loaded dynamically -->
         </div>
         <div class="overlay">
-            <div class="overlay-content">
+            <div class="overlay-content" id="heroContent">
                 <h1 id="heroTitle">আপনার স্বপ্নের বাড়ি</h1>
                 <h2 id="heroSubtitle">জলজোছনা প্রজেক্টে</h2>
                 <p id="heroDesc" class="hero-subtitle">প্রকল্পের মূল্য তালিকা - বুকিং পরিমাণ: ১০,০০০ টাকা (কার্য প্রতি)
                 </p>
-                <div class="cta-buttons">
+                <div class="cta-buttons" id="heroButtons">
                     <a id="heroBtnPrimary" href="#pricing" class="btn btn-primary">মূল্য দেখুন</a>
                     <a id="heroBtnSecondary" href="#contact" class="btn btn-secondary">যোগাযোগ করুন</a>
                 </div>
@@ -794,32 +792,136 @@
 
     <script>
         (function () {
-            // Slider logic
-            const slides = Array.from(document.querySelectorAll('#homeSlides img'));
+            let sliders = [];
+            let currentSliderIndex = 0;
+            let idx = 0, timer;
+            const slidesContainer = document.getElementById('homeSlides');
             const dotsWrap = document.getElementById('homeDots');
             const prev = document.getElementById('homePrev');
             const next = document.getElementById('homeNext');
-            if (!slides.length || !dotsWrap || !prev || !next) return;
-            let idx = 0, timer;
-            function setActive(i) {
-                slides.forEach((im, k) => im.classList.toggle('active', k === i));
-                const dots = Array.from(dotsWrap.children);
-                dots.forEach((d, k) => d.classList.toggle('active', k === i));
-                idx = i;
+            const heroTitle = document.getElementById('heroTitle');
+            const heroSubtitle = document.getElementById('heroSubtitle');
+            const heroDesc = document.getElementById('heroDesc');
+            const heroBtnPrimary = document.getElementById('heroBtnPrimary');
+            const heroBtnSecondary = document.getElementById('heroBtnSecondary');
+
+            async function loadHeroSliders() {
+                try {
+                    const response = await fetch('/api/hero-sliders');
+                    if (!response.ok) throw new Error('Failed to load sliders');
+                    sliders = await response.json();
+                    
+                    if (sliders.length === 0) {
+                        // Fallback to default content
+                        sliders = [{
+                            id: 'default',
+                            title: 'আপনার স্বপ্নের বাড়ি',
+                            subtitle: 'জলজোছনা প্রজেক্টে',
+                            description: 'প্রকল্পের মূল্য তালিকা - বুকিং পরিমাণ: ১০,০০০ টাকা (কার্য প্রতি)',
+                            primary_button_text: 'মূল্য দেখুন',
+                            primary_button_link: '#pricing',
+                            secondary_button_text: 'যোগাযোগ করুন',
+                            secondary_button_link: '#contact',
+                            image_url: '/images/Ningbo-Green-Belt-05_.jpg'
+                        }];
+                    }
+                    
+                    renderSliders();
+                    initSlider();
+                } catch (error) {
+                    console.error('Error loading hero sliders:', error);
+                    // Use default content on error
+                    renderDefaultSlider();
+                }
             }
-            slides.forEach((_, i) => {
-                const d = document.createElement('div');
-                d.className = 'slider-dot' + (i === 0 ? ' active' : '');
-                d.addEventListener('click', () => { setActive(i); restart(); });
-                dotsWrap.appendChild(d);
+
+            function renderSliders() {
+                slidesContainer.innerHTML = '';
+                sliders.forEach((slider, index) => {
+                    const img = document.createElement('img');
+                    img.src = slider.image_url || '/images/Ningbo-Green-Belt-05_.jpg';
+                    img.alt = slider.title || `Slide ${index + 1}`;
+                    img.className = index === 0 ? 'active' : '';
+                    img.id = `homeSlide${index + 1}`;
+                    slidesContainer.appendChild(img);
+                });
+                
+                // Update content for first slider
+                if (sliders.length > 0) {
+                    updateContent(0);
+                }
+            }
+
+            function renderDefaultSlider() {
+                slidesContainer.innerHTML = `
+                    <img id="homeSlide1" src="/images/Ningbo-Green-Belt-05_.jpg" alt="Slide 1" class="active" />
+                `;
+                initSlider();
+            }
+
+            function updateContent(index) {
+                const slider = sliders[index];
+                if (!slider) return;
+                
+                currentSliderIndex = index;
+                
+                if (heroTitle) heroTitle.textContent = slider.title || 'আপনার স্বপ্নের বাড়ি';
+                if (heroSubtitle) heroSubtitle.textContent = slider.subtitle || 'জলজোছনা প্রজেক্টে';
+                if (heroDesc) heroDesc.textContent = slider.description || '';
+                
+                if (heroBtnPrimary) {
+                    heroBtnPrimary.textContent = slider.primary_button_text || 'মূল্য দেখুন';
+                    heroBtnPrimary.href = slider.primary_button_link || '#pricing';
+                    heroBtnPrimary.style.display = slider.primary_button_text ? '' : 'none';
+                }
+                
+                if (heroBtnSecondary) {
+                    heroBtnSecondary.textContent = slider.secondary_button_text || 'যোগাযোগ করুন';
+                    heroBtnSecondary.href = slider.secondary_button_link || '#contact';
+                    heroBtnSecondary.style.display = slider.secondary_button_text ? '' : 'none';
+                }
+            }
+
+            function initSlider() {
+                const slides = Array.from(document.querySelectorAll('#homeSlides img'));
+                if (!slides.length || !dotsWrap || !prev || !next) return;
+                
+                dotsWrap.innerHTML = '';
+                
+                function setActive(i) {
+                    slides.forEach((im, k) => im.classList.toggle('active', k === i));
+                    const dots = Array.from(dotsWrap.children);
+                    dots.forEach((d, k) => d.classList.toggle('active', k === i));
+                    idx = i;
+                    updateContent(i);
+                }
+                
+                slides.forEach((_, i) => {
+                    const d = document.createElement('div');
+                    d.className = 'slider-dot' + (i === 0 ? ' active' : '');
+                    d.addEventListener('click', () => { setActive(i); restart(); });
+                    dotsWrap.appendChild(d);
+                });
+                
+                function go(n) { setActive((idx + n + slides.length) % slides.length); }
+                function restart() { clearInterval(timer); timer = setInterval(() => go(1), 5000); }
+                prev.addEventListener('click', () => { go(-1); restart(); });
+                next.addEventListener('click', () => { go(1); restart(); });
+                restart();
+            }
+
+            // Load sliders on page load
+            loadHeroSliders();
+            
+            // Listen for updates from dashboard
+            window.addEventListener('storage', function(e) {
+                if (e.key === 'refreshHeroSlider') {
+                    loadHeroSliders();
+                }
             });
-            function go(n) { setActive((idx + n + slides.length) % slides.length); }
-            function restart() { clearInterval(timer); timer = setInterval(() => go(1), 4000); }
-            prev.addEventListener('click', () => { go(-1); restart(); });
-            next.addEventListener('click', () => { go(1); restart(); });
-            restart();
-
-
+            
+            // Reload sliders every 30 seconds
+            setInterval(loadHeroSliders, 30000);
         })();
     </script>
 </section>

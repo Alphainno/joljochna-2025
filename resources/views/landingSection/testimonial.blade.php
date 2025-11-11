@@ -1,6 +1,6 @@
-   <section id="testimonials" class="testimonials bg-red-500">
-        <h2 id="testimonialsTitle" class="section-title" style="color: #1a7a4a;">বিনিয়োগকারী মন্তব্য</h2>
-        <p id="testimonialsSubtitle" class="section-subtitle">আমাদের গ্রাহকরা আমাদের প্রকল্প সম্পর্কে কী বলেন</p>
+   <section id="testimonials" class="testimonials">
+        <h2 id="testimonialsTitle" class="section-title testimonials-title">বিনিয়োগকারী মন্তব্য</h2>
+        <p id="testimonialsSubtitle" class="section-subtitle testimonials-subtitle">আমাদের গ্রাহকরা আমাদের প্রকল্প সম্পর্কে কী বলেন</p>
 
         <div class="carousel-wrapper">
             <button id="prevTestimonialBtn" class="carousel-btn prev-btn">❮</button>
@@ -33,7 +33,6 @@
                     try {
                         const response = await fetch('/api/testimonials');
                         testimonials = await response.json();
-                        console.log('Loaded testimonials:', testimonials);
                         renderTestimonials();
                         initCarousel();
                     } catch (error) {
@@ -56,26 +55,36 @@
                         card.className = 'testimonial-card';
                         card.dataset.testimonialIndex = index;
                         
-                        let avatarHtml = '';
+                        // Only show avatar section if image exists
+                        let investorMetaHtml = '';
                         if (testimonial.image_url) {
-                            console.log(`Testimonial ${testimonial.name} image URL:`, testimonial.image_url);
-                            avatarHtml = `<img src="${testimonial.image_url}" alt="${testimonial.name || ''}" class="investor-avatar-image" style="width:110px; height:110px; border-radius:50%; object-fit:cover; border:4px solid #0a4d2e; box-shadow: 0 8px 20px rgba(10, 77, 46, 0.2), 0 0 0 8px rgba(255, 215, 0, 0.1);" onerror="console.error('Failed to load image:', '${testimonial.image_url}'); this.style.display='none'; this.parentElement.innerHTML='<div class=\\"investor-avatar test-avatar\\">${testimonial.avatar || '👤'}</div>';" onload="console.log('Image loaded successfully:', '${testimonial.image_url}');" />`;
+                            investorMetaHtml = `
+                                <div class="investor-meta">
+                                    <div class="investor-image-wrapper">
+                                        <img src="${testimonial.image_url}" class="investor-avatar-image" onerror="this.style.display='none';" />
+                                    </div>
+                                    <div class="investor-info">
+                                        <div class="investor-name">${testimonial.name || ''}</div>
+                                        <div class="investor-title">${testimonial.title || ''}</div>
+                                    </div>
+                                </div>
+                            `;
+                            card.classList.add('has-avatar');
                         } else {
-                            console.log(`Testimonial ${testimonial.name} using avatar fallback:`, testimonial.avatar);
-                            avatarHtml = `<div class="investor-avatar test-avatar">${testimonial.avatar || '👤'}</div>`;
+                            card.classList.add('no-avatar');
                         }
                         
                         card.innerHTML = `
-                            <div class="investor-meta">
-                                ${avatarHtml}
-                                <div>
-                                    <div class="investor-name test-name">${testimonial.name || ''}</div>
-                                    <div class="investor-title test-title">${testimonial.title || ''}</div>
-                                </div>
-                            </div>
+                            ${investorMetaHtml}
                             <div class="quote-content-wrapper">
-                                <span class="quote-icon">❝</span>
-                                <p class="quote-text test-quote">${testimonial.quote || ''}</p>
+                                <div class="quote-icon">"</div>
+                                ${!testimonial.image_url ? `
+                                    <div class="testimonial-header">
+                                    <div class="investor-name">${testimonial.name || ''}</div>
+                                    <div class="investor-title">${testimonial.title || ''}</div>
+                                </div>
+                                ` : ''}
+                                <p class="quote-text">${testimonial.quote || ''}</p>
                             </div>
                         `;
                         track.appendChild(card);

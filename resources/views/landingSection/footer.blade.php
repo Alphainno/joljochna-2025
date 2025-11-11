@@ -34,7 +34,7 @@
                 </div>
             </div>
 
-            <div class="footer-section" style="margin-left: 110px">
+            <div class="footer-section">
                 <h3 id="ftProjectAddressLabel">প্রকল্পের ঠিকানা</h3>
                 <p id="ftProjectAddress">শুভনূর ৩৮৮ বাড়ি সিদ্ধার্থ এস আবাস, খুলনা, বাংলাদেশ</p>
 
@@ -42,27 +42,23 @@
                 <p id="ftContactAddress">NEX Real Estate, Century Trade Center, House-23/C, Road-17, Kamal Ataturk Ave, Banani C/A, Dhaka</p>
 
                 <h3 id="ftPaymentMethodsLabel">পেমেন্ট মাধ্যম</h3>
-                <div class="payment-methods text-sm" style="width:220px;">
-                    <span class="payment-method text-sm">
-                        <i class="fas fa-mobile-alt text-sm"></i> <span id="ftBkash">বিকাশ</span>
+                <div class="payment-methods">
+                    <span class="payment-method">
+                        <i class="fas fa-mobile-alt"></i> <span id="ftBkash">বিকাশ</span>
                     </span>
-                    <span class="payment-method text-sm">
-                        <i class="fas fa-money-bill-wave text-sm"></i> <span id="ftNagad">নগদ</span>
+                    <span class="payment-method">
+                        <i class="fas fa-money-bill-wave"></i> <span id="ftNagad">নগদ</span>
                     </span>
-
-                    <div style="width:220px;">
-                        <span class="payment-method text-sm">
-                            <i class="fas fa-university text-sm"></i> <span id="ftBankTransfer">ব্যাংক ট্রান্সফার</span>
+                    <span class="payment-method">
+                        <i class="fas fa-university"></i> <span id="ftBankTransfer">ব্যাংক ট্রান্সফার</span>
                         </span>
-                        <span class="payment-method text-sm ms-2">
-                            <i class="fas fa-credit-card text-sm"></i> <span id="ftCard">কার্ড</span>
+                    <span class="payment-method">
+                        <i class="fas fa-credit-card"></i> <span id="ftCard">কার্ড</span>
                         </span>
-                    </div>
-
                 </div>
             </div>
 
-            <div class="footer-section" style="margin-left:110px">
+            <div class="footer-section">
                 <h3 id="ftQuickLinksLabel">দ্রুত লিংক</h3>
                 <ul class="footer-links">
                     <li><a id="ftQlHome" href="#home"><i class="fas fa-chevron-right"></i> <span id="ftQlHomeText">হোম</span></a></li>
@@ -95,7 +91,8 @@
         </div>
 
         <div class="footer-bottom">
-            <p id="ftBottom">২০২৫ জলজোছনা। সর্বস্বত্ব সংরক্ষিত। | NEX Real Estate এর একটি প্রকল্প</p>
+            <p id="ftBottom">© ২০২৫ জলজোছনা। সর্বস্বত্ব সংরক্ষিত।</p>
+            <p style="margin-top: 0.5rem; font-size: 0.9rem; opacity: 0.8;">Design & Develop By <a href="https://alphainno.com" target="_blank" style="color: #ffd700; text-decoration: none; font-weight: 600; transition: all 0.3s ease;">Alphainno</a></p>
         </div>
     </footer>
     <script>
